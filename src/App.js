@@ -9,8 +9,8 @@ require('dotenv').config()
 let boro = "";
 let housenumber = "";
 let streetname = "";
-let startDate = "";
-let endDate = ""
+// let startDate = "";
+// let endDate = ""
 let zip = "";
 var url;
 
@@ -26,7 +26,85 @@ var url;
 //  </form>
 // </div>
 
+// --------------------------- Form for select input
+class CityForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: 'coconut'};
 
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('Your favorite flavor is: ' + this.state.value);
+    event.preventDefault();
+  }
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Pick your favorite La Croix flavor:
+          <select value={this.state.value} onChange={this.handleChange}>
+            <option value="grapefruit">Grapefruit</option>
+            <option value="lime">Lime</option>
+            <option value="coconut">Coconut</option>
+            <option value="mango">Mango</option>
+          </select>
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+
+// --------------------------- Form for all regular text inputs
+class InputForm extends Component {
+  constructor(props) {
+     super(props);
+     this.state = {
+       boro: "",
+       housenumber: "",
+       streetname: "",
+       zip: "",
+     };
+
+     this.handleInputChange = this.handleInputChange.bind(this);
+   }
+
+   handleInputChange(event) {
+     const target = event.target;
+     // const value = target.type === 'checkbox' ? target.checked : target.value;
+     const name = target.name;
+
+     this.setState({
+       [name]: value
+     });
+   }
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Pick your favorite La Croix flavor:
+          <select value={this.state.value} onChange={this.handleChange}>
+            <option value="grapefruit">Grapefruit</option>
+            <option value="lime">Lime</option>
+            <option value="coconut">Coconut</option>
+            <option value="mango">Mango</option>
+          </select>
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+
+
+// --------------------------- Output to display in the DOM
 class Data extends Component {
   constructor(props) {
     super(props);
@@ -36,33 +114,32 @@ class Data extends Component {
       houses: []
     };
   }
-   componentDidMount() {
-    if(boro && housenumber && streetname && zip && startDate && endDate){
-      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${boro}&housenumber=${housenumber}&streetname=${streetname}&zip=${zip}&$where=novissueddate between "${startDate}" and "${endDate}"`;
+ componentDidMount() {
+  if(boro && housenumber && streetname && zip){
+    url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${boro}&housenumber=${housenumber}&streetname=${streetname}&zip=${zip}`;
+  }
+  else{
+    url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?"
+  }
+  axios.get(url, {
+    params: {
+      "$limit" : 10,
+      "$$app_token" : process.env.NYC_DATA_APP_TOKEN
     }
-    else{
-      url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?"
+  })
+  .then(
+    (result) => {
+      this.setState({
+        isLoaded: true,
+        houses: result.data
+      });
+    },
+    (error) => {
+      this.setState({
+        isLoaded: true,
+        error
+      });
     }
-    axios.get(url, {
-      params: {
-        "$limit" : 10,
-        "$$app_token" : process.env.NYC_DATA_APP_TOKEN
-      }
-    })
-    .then(
-      (result) => {
-        console.log(result.data)
-              this.setState({
-                isLoaded: true,
-                houses: result.data
-              });
-            },
-            (error) => {
-                this.setState({
-                  isLoaded: true,
-                  error
-                });
-              }
   )}
   render() {
     const { error, isLoaded, houses } = this.state;
@@ -91,7 +168,7 @@ class Data extends Component {
   }
 }
 
-export default Data;
+export {CityForm, InputForm, Data};
 
 
 // $where=UPPER(field_name) = 'FOO'
