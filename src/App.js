@@ -14,7 +14,20 @@ let endDate = ""
 let zip = "";
 var url;
 
-class App extends Component {
+
+// Begining of form
+// <div className="Form-1" >
+//   <form onSubmit={this.handleSubmit}>
+//    <label>
+//      Name:
+//      <input type="text" value={this.state.value} onChange={this.handleChange} />
+//    </label>
+//    <input type="submit" value="Submit" />
+//  </form>
+// </div>
+
+
+class Data extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,26 +67,31 @@ class App extends Component {
   render() {
     const { error, isLoaded, houses } = this.state;
     return (
-      <div className="App" >
-        <header className="App-header">NYC Housing Violations
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+      <div className="Data" >
+
+        // Begining of Header
+        <header className="Data-header">NYC Housing Violations
+          <img src={logo} className="Data-logo" alt="logo" />
+          <h1 className="Data-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
+        <p className="Data-intro">
         </p>
+
+       // List of elements from data returned from API
         <ul>
-        {houses.map((item, index )=> (
-          <li key={index}>
-          {item.lot}
-          </li>
-        ))}
-      </ul>
+          {houses.map((house, index )=> (
+            <li key={index}>
+              {house.lot}
+            </li>
+          ))}
+        </ul>
+
       </div>
     );
   }
 }
 
-export default App;
+export default Data;
 
 
 // $where=UPPER(field_name) = 'FOO'
