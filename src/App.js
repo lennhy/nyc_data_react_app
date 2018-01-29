@@ -6,13 +6,13 @@ require('dotenv').config()
 
 
 
-let boro;
-let housenumber;
-let streetname;
-// let startDate = "";
-// let endDate = ""
-let zip;
-var url;
+// let boro;
+// let housenumber;
+// let streetname;
+// // let startDate = "";
+// // let endDate = ""
+// let zip;
+// var url;
 
 // --------------------------- Output to display in the DOM
 class App extends Component {
@@ -26,18 +26,19 @@ class App extends Component {
        //   "Bronx",
        //   "Staten Island"
        // ],
+       boro: '',
        housenumber: '',
        streetname: '',
        zip: '',
        houses: []
      };
-     this.handleInputChange = this.handleInputChange.bind(this);
+     this.handleChange = this.handleChange.bind(this);
      this.handleSubmit = this.handleSubmit.bind(this);
 
   }
 
    // Handle input from form
-   handleInputChange(event) {
+   handleChange(event) {
      const target = event.target;
      const name = target.name;
      this.setState({
@@ -46,18 +47,19 @@ class App extends Component {
    }
 
    handleSubmit(event) {
+     event.preventDefault();
       alert('Your favorite flavor is: ' + this.state.housenumber + "," + this.state.streetname + "," + this.state.zip);
-      event.preventDefault();
    }
 
   //  Rweturn data to DOM
  componentDidMount() {
-  if( housenumber && streetname && zip){
-    url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?housenumber=${housenumber}&streetname=${streetname}&zip=${zip}`;
-  }
-  else{
+  var url;
+  // if( this.state.housenumber && this.state.streetname && this.state.zip){
+  //   url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}`;
+  // }
+  // else{
     url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?"
-  }
+  // }
   axios.get(url, {
     params: {
       "$limit" : 10,
@@ -78,6 +80,45 @@ class App extends Component {
       });
     }
   )}
+
+  componentDidUpdate(prevProps, prevState){
+    console.log(prevState)
+    var url;
+    if (this.state.zip !== prevState.zip) {
+      // var url;
+      // if( this.state.housenumber && this.state.streetname && this.state.zip){
+      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}`;
+      // }
+      // else{
+      //   url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?"
+      // }
+      axios.get(url, {
+        params: {
+          "$limit" : 10,
+          "$$app_token" : process.env.NYC_DATA_APP_TOKEN
+        }
+      })
+      .then(
+        (result) => {
+          console.log(result, url)
+          this.setState({
+            isLoaded: true,
+            houses: result.data
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      )
+    }
+
+
+    // console.log(this.state.houses)
+
+  }
   render() {
     const { error, isLoaded, houses } = this.state;
     return (
@@ -95,7 +136,7 @@ class App extends Component {
         <form onSubmit={this.handleSubmit}>
           <label>
             Choose a Borough:
-            <select value={this.state.value} onChange={this.handleInputChange}>
+            <select value={this.state.value} onChange={this.handleChange}>
             <option value="Manhattan" name="Manhattan">Manhattan</option>
             <option value="Queens" name="Queens">Queens</option>
             <option value="Brooklyn" name="Brooklyn">Brooklyn</option>
@@ -107,13 +148,23 @@ class App extends Component {
         </form>
       */}
 
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit.bind(this)}>
+
+      <label>
+        Borough:
+        <input type="text"
+          name="boro"
+          value={this.state.boro}
+          onChange={this.handleChange}
+        />
+      </label>
+
         <label>
           House:
           <input type="text"
             name="housenumber"
             value={this.state.housenumber}
-            onChange={this.handleInputChange}
+            onChange={this.handleChange}
           />
         </label>
 
@@ -122,7 +173,7 @@ class App extends Component {
           <input type="text"
             name="streetname"
             value={this.state.streetname}
-            onChange={this.handleInputChange}
+            onChange={this.handleChange}
           />
         </label>
 
@@ -131,7 +182,7 @@ class App extends Component {
           <input type="text"
             name="zip"
             value={this.state.zip}
-            onChange={this.handleInputChange}
+            onChange={this.handleChange}
           />
         </label>
 
