@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      boro: '',
+      boro: 'MANHATTAN',
       housenumber: '',
       streetname: '',
       zip: '',
@@ -115,7 +115,7 @@ class App extends Component {
       <label>
         Choose a Borough:
         <select value={this.state.value} name="boro" onChange={this.handleChange}>
-            <option value="manhattan">Manhattan</option>
+            <option defaultValue value="manhattan">Manhattan</option>
             <option value="bronx">Bronx</option>
             <option value="brooklyn">Brooklyn</option>
             <option value="queens">Queens</option>
