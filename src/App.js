@@ -42,7 +42,7 @@ class App extends Component {
      const target = event.target;
      const name = target.name;
      this.setState({
-       [name]: target.value
+       [name]: target.value.toUpperCase()
      });
    }
 
@@ -54,9 +54,9 @@ class App extends Component {
   //  Rweturn data to DOM
  componentDidMount() {
   var url;
-  // if( this.state.housenumber && this.state.streetname && this.state.zip){
-  //   url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}`;
-  // }
+  if( this.state.housenumber && this.state.streetname && this.state.zip){
+    url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}`;
+  }
   // else{
     url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?"
   // }
@@ -81,17 +81,17 @@ class App extends Component {
     }
   )}
 
-  componentDidUpdate(prevProps, prevState){
-    console.log(prevState)
-    var url;
-    if (this.state.zip !== prevState.zip) {
+  update() {
+    // console.log(prevState)
+    // if (this.state.zip !== prevState.zip) {
       // var url;
       // if( this.state.housenumber && this.state.streetname && this.state.zip){
-      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}`;
+      var url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}`;
       // }
       // else{
       //   url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?"
       // }
+      console.log(url);
       axios.get(url, {
         params: {
           "$limit" : 10,
@@ -118,7 +118,6 @@ class App extends Component {
 
     // console.log(this.state.houses)
 
-  }
   render() {
     const { error, isLoaded, houses } = this.state;
     return (
@@ -186,7 +185,7 @@ class App extends Component {
           />
         </label>
 
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit" onClick={this.update.bind(this)} />
       </form>
 
        {/* // List of elements from data returned from API */}
