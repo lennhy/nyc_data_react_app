@@ -80,7 +80,7 @@ class App extends Component {
     this.runApi()
   }
 
-  // console.log(this.state.houses)
+  // Render to the DOM the jsx and data from api 
   render() {
     const { error, isLoaded, houses } = this.state;
     return (
@@ -94,24 +94,9 @@ class App extends Component {
       <p className="App-intro">
       </p>
 
-      {/* // Form for boros
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Choose a Borough:
-            <select value={this.state.value} onChange={this.handleChange}>
-            <option value="Manhattan" name="Manhattan">Manhattan</option>
-            <option value="Queens" name="Queens">Queens</option>
-            <option value="Brooklyn" name="Brooklyn">Brooklyn</option>
-            <option value="Bronx" name="Bronx">Brooklyn</option>
-            <option value="Staten Island" name="Staten Island">Staten Island</option>
-            </select>
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-      */}
-
       <form onSubmit={this.handleSubmit}>
 
+      {/* // Boro code Input */}
       <label>
         Choose a Borough:
         <select value={this.state.value} name="boro" onChange={this.handleChange}>
@@ -123,17 +108,6 @@ class App extends Component {
           </select>
       </label>
 
-      {/* // Form for boros
-      <label>
-        Borough:
-        <input type="text"
-          name="boro"
-          value={this.state.boro}
-          onChange={this.handleChange}
-        />
-      </label>
-      */}
-
         <label>
           House:
           <input type="text"
@@ -143,6 +117,7 @@ class App extends Component {
           />
         </label>
 
+        {/* // Streetname code Input */}
         <label>
           Street Name:
           <input type="text"
@@ -152,6 +127,7 @@ class App extends Component {
           />
         </label>
 
+        {/* // Zip code Input */}
         <label>
           Zip:
           <input type="text"
