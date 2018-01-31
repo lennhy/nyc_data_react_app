@@ -17,6 +17,8 @@ class App extends Component {
       housenumber: '',
       streetname: '',
       zip: '',
+      loading: '',
+      imageStatus: 'Loading',
       houses: []
     };
     // --------- Bind the data to the state on every keydown
@@ -34,7 +36,6 @@ class App extends Component {
     this.setState({
       [name]: target.value.toUpperCase()
     });
-
   }
 
   // ----------- Handle submission of form
@@ -48,13 +49,12 @@ class App extends Component {
     console.log(this.state);
     var url;
     if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
-      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}`;
+      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
     } else {
-      url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?"
+      url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$limit=1000&$order=nta ASC"
     }
     axios.get(url, {
         params: {
-          "$limit": "",
           "$$app_token": process.env.NYC_DATA_APP_TOKEN
         }
       })
@@ -74,6 +74,7 @@ class App extends Component {
         }
       )
   }
+
   //  Return data to DOM
   componentDidMount() {
     this.runApi()
@@ -84,23 +85,56 @@ class App extends Component {
     this.runApi()
   }
 
+  // exit button toggle form search box for mobile
+  toggleFormBox(e){
+    console.log(e.target.className)
+    console.log(e.target.className === "formButton")
+    if(e.target.className === "exit"){
+      document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "none";
+      document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "block";
+
+    }
+    if(e.target.className === "formButton btn btn-primary"){
+      document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "none";
+      document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "block";
+    }
+  }
+  handleImageLoaded() {
+     this.setState({ imageStatus: "loaded" });
+   }
+  // loadingMessage(){
+  //
+  //   if(document.load()document.getElementsByClassName("list-group row col-sm-6")[0].innerHTML()){
+  //     this.state.loading = "Loading"
+  //   }else{
+  //     this.state.loaded = "";
+  //   }
+  // }
+
   // Render to the DOM the jsx and data from api
   render() {
     const { error, isLoaded, houses } = this.state;
     return (
-            <div className="container-fluid">
+            <div className="container-fluid" onLoad={this.handleImageLoaded.bind(this)}>
 
               {/* // Begining of Header */}
               <nav className="navbar fixed-top navbar-custom bg-light">
-                <div className="navbar-brand" href="#">City of New York Housing Violations</div>
+                <div className="navbar-brand" href="#">City of New York Housing Violations / Beta Version</div>
               </nav>
 
               <div className="row">
+
+              <div className="formButton btn btn-primary" onClick={this.toggleFormBox}>Search for a building</div>
+
+              {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of Form Container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
                 <nav className="col-md-2 bd-sidebar">
+                <div className="exit" onClick={this.toggleFormBox}>x</div>
+
                   <form onSubmit={this.handleSubmit}>
 
-                  <div className="form-group ">
                   {/* // Boro code Input */}
+                  <div className="form-group ">
+
                     <label>
                     <select value={this.state.value} name="boro" onChange={this.handleChange} className="form-control">
                     <option defaultValue value="">Borough</option>
@@ -113,6 +147,7 @@ class App extends Component {
                     </label>
                   </div>
 
+                  {/* // Housenumber Input */}
                   <div className="form-group">
                     <label>
                     <input type="text" className="form-control"
@@ -149,26 +184,44 @@ class App extends Component {
                     </label>
                   </div>
 
-                  <input type="submit" value="Submit" onClick={this.update.bind(this)} className="btn btn-light" />
+                  <input type="submit" value="Submit" onClick={this.update.bind(this)} className="btn btn-primary" />
                   </form>
-                {/* /Side bar/ */}
+                {/* / <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Side bar End of Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>/ */}
+
                 </nav>
 
+                {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of List of elements from data returned from API >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
                 <div className="col-md-10 bd-content">
-                  {/* // List of elements from data returned from API */}
-                  <ul>
-                    {houses.map((house, index )=> (
-                    <li key={index}>
-                    Address: {house.housenumber} {" "}
-                    {house.streetname}
-                    {house.apartment}, {" "}
-                    {house.boro},
-                    {house.zip} {" "}
-                    {"("}{house.nta} {" area "}{")"}
-                    {" "} {house.apartment}
-                    </li>
-                    ))}
-                  </ul>
+                  {houses.map((house, index )=> (
+
+                    <ul className="list-group">
+
+                      <div className="row">
+
+                        <div className="col-sm-6">
+                           <h2 key={index+=1} >{" "}{house.streetname}{", "}{house.apartment}, {" "}{house.boro},{house.zip}
+                           </h2>
+                           <li key={index+=2} className="list-group-item"><span className="bold">Issue Date of Violation</span> {":  "}{house.novissueddate}
+                           </li>
+                           <li key={index+=2} className="list-group-item"><span className="bold">Date of Inspection</span> {":  "}{house.inspectiondate}
+                           </li>
+                           <li key={index+=4} className="list-group-item"><span className="bold">Date violation was approved </span> {":  "}{house.approveddate}
+                          </li>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <li key={index+=4} className="list-group-item"><span className="bold">Violation{": "}</span> {house.novdescription}
+                          </li>
+                          <li key={index+=5} className="list-group-item list-group-item-info"><span className="bold">Current Status</span> {":  "}{house.currentstatus}
+                         </li>
+                        </div>
+
+                      </div>
+
+                    </ul>
+
+                  ))}
+                {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< End of List of elements from data returned from API >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
                 </div>
 
               {/* // Row 10 wide */}
@@ -176,6 +229,7 @@ class App extends Component {
 
             {/* // Contianer fluid */}
             </div>
+
     );
   }
 }

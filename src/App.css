@@ -1,30 +1,157 @@
 body, .container-fluid{
   margin: 0;
   padding: 0;
+  background: #e6e9ed;
+  font-size: .9em;
 }
+h2{
+  font-size: 1rem;
+  font-weight: bold;
+}
+h3{
+  font-size: .85rem;
+  font-weight: bold;
+}
+
+
+
+/* LAYOUT */
 .navbar {
   color: #fff;
-  background: #000;
+  background: #333;
   margin: 0;
   padding: 10px;
+  border-bottom:1px solid rgba(0, 0, 0, 0.125);
 }
 .bd-content{
   position: absolute;
   left:15%;
-  width: 60%;
+  width: 70%;
   top:80px;
-  margin: 0 20px 0 20px;
+  margin: 0 20px 0 40px;
+}
+.custom{
+  top: 100px;
+  z-index: 2000;
+  width: 100px;
+  margin: 0 auto;
+}
+
+/* COMPONENTS */
+.btn-primary{
+  background: #EB5E66;
+  border: none;
+  border-radius: 30px;
+}
+.btn-primary:hover{
+    background: #cc444c;
+}
+.exit{
+  display: none;
+}
+.exit:hover{
+  cursor: pointer;
+}
+.formButton{
+  display: none;
 }
 .bd-sidebar{
+  display: block;
   position:fixed;
-  background: #333;
+  background: #dbdee3;
   padding: 20px 20px 100% 20px;
   left:0;
-  top:60px;
+  top:50px;
   width: 40%;
   z-index: 1000;
+}
+
+
+/* LISTS */
+.list-group{
+  /* width:  60%; */
+  background: #f8f9fa;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+.list-group-item{
+  padding: 10px;
+  /* margin: 10px 0 0 0 ; */
+  /* width: 30%; */
+}
+/* STYLING */
+.bold{
+  font-weight: bold;
 }
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+
+/*  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   MEDIA QUERRIES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+/* Extra small devices (portrait phones, less than 576px)
+No media query since this is the default in Bootstrap */
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .bd-content{
+    position: relative;
+    left:0;
+    width: 100%;
+    margin: 0;
+  }
+  .formButton{
+    background: #EB5E66;
+    border:none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 0;
+    position: fixed;
+    top:50px;
+    left: 0;
+    display: block;
+    z-index: 3000;
+  }
+  .formButton#visited{
+    background: #cb444b;
+  }
+  .bd-sidebar{
+    top:30px;
+    width: 75%;
+    display: none;
+  }
+  .exit{
+    display: block;
+    position: relative;
+    z-index: 20000;
+    text-align: right;
+    width: 100%;
+    color: #333;
+    font-size: 2rem;
+  }
+  .btn-primary{
+    width: 100%;
+  }
+  .form-control input{
+    width: 100%;
+  }
+  .list-group{
+    margin-top:70px;
+  }
+ }
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+ }
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+ }
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+ }
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+ }
