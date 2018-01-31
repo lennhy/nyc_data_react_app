@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
+// require('jquery')
+// require('bootstrap')
+// import styles '.././src/lib/css/bootstrap.min.css'
+
 require('dotenv').config()
 
 // ---------- Start of component
@@ -9,7 +13,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      boro: 'MANHATTAN',
+      boro: '',
       housenumber: '',
       streetname: '',
       zip: '',
@@ -80,81 +84,96 @@ class App extends Component {
     this.runApi()
   }
 
-  // Render to the DOM the jsx and data from api 
+  // Render to the DOM the jsx and data from api
   render() {
     const { error, isLoaded, houses } = this.state;
     return (
-      <div className="App" >
+            <div className="container-fluid">
 
-      {/* // Begining of Header */}
-      <header className="App-header">NYC Housing Violations
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1 className="App-title">Welcome to React</h1>
-      </header>
-      <p className="App-intro">
-      </p>
+              {/* // Begining of Header */}
 
-      <form onSubmit={this.handleSubmit}>
 
-      {/* // Boro code Input */}
-      <label>
-        Choose a Borough:
-        <select value={this.state.value} name="boro" onChange={this.handleChange}>
-            <option defaultValue value="manhattan">Manhattan</option>
-            <option value="bronx">Bronx</option>
-            <option value="brooklyn">Brooklyn</option>
-            <option value="queens">Queens</option>
-            <option value="staten_island">Staten Island</option>
-          </select>
-      </label>
+              <div className="row">
+                <nav className="col-md-2 bd-sidebar">
+                  <form onSubmit={this.handleSubmit}>
 
-        <label>
-          House:
-          <input type="text"
-            name="housenumber"
-            value={this.state.housenumber}
-            onChange={this.handleChange}
-          />
-        </label>
+                  <div className="form-group ">
+                  {/* // Boro code Input */}
+                    <label>
+                    <select value={this.state.value} name="boro" onChange={this.handleChange} className="form-control">
+                    <option defaultValue value="">Borough</option>
+                    <option value="manhattan">Manhattan</option>
+                    <option value="bronx">Bronx</option>
+                    <option value="brooklyn">Brooklyn</option>
+                    <option value="queens">Queens</option>
+                    <option value="staten_island">Staten Island</option>
+                    </select>
+                    </label>
+                  </div>
 
-        {/* // Streetname code Input */}
-        <label>
-          Street Name:
-          <input type="text"
-            name="streetname"
-            value={this.state.streetname}
-            onChange={this.handleChange}
-          />
-        </label>
+                  <div className="form-group">
+                    <label>
+                    <input type="text" className="form-control"
+                    name="housenumber"
+                    value={this.state.housenumber}
+                    onChange={this.handleChange}
+                    placeholder="Building Number"
+                    />
+                    </label>
+                  </div>
 
-        {/* // Zip code Input */}
-        <label>
-          Zip:
-          <input type="text"
-            name="zip"
-            value={this.state.zip}
-            onChange={this.handleChange}
-          />
-        </label>
+                  <div className="form-group" >
+                  {/* // Streetname code Input */}
+                    <label>
+                    <input type="text" className="form-control"
+                    name="streetname"
+                    value={this.state.streetname}
+                    onChange={this.handleChange}
+                    placeholder="Street Name"
 
-        <input type="submit" value="Submit" onClick={this.update.bind(this)} />
-      </form>
+                    />
+                    </label>
+                  </div>
 
-       {/* // List of elements from data returned from API */}
-        <ul>
-          {houses.map((house, index )=> (
-            <li key={index}>
-              Address: {house.housenumber} {" "}
-              {house.streetname}
-              {house.apartment}, {" "}
-              {house.boro},
-              {house.zip} {" "}
-              {"("}{house.nta} {" area "}{")"}
-            </li>
-          ))}
-        </ul>
+                  <div className="form-group">
+                  {/* // Zip code Input */}
+                    <label>
+                    <input type="text" className="form-control"
+                    name="zip"
+                    value={this.state.zip}
+                    onChange={this.handleChange}
+                    placeholder="Zip Code"
+                    />
+                    </label>
+                  </div>
 
-      </div>
+                  <input type="submit" value="Submit" onClick={this.update.bind(this)} className="btn btn-light" />
+                  </form>
+                {/* /Side bar/ */}
+                </nav>
+
+                <div className="col-md-10 bd-content">
+                  {/* // List of elements from data returned from API */}
+                  <ul>
+                    {houses.map((house, index )=> (
+                    <li key={index}>
+                    Address: {house.housenumber} {" "}
+                    {house.streetname}
+                    {house.apartment}, {" "}
+                    {house.boro},
+                    {house.zip} {" "}
+                    {"("}{house.nta} {" area "}{")"}
+                    {" "} {house.apartment}
+                    </li>
+                    ))}
+                  </ul>
+                </div>
+
+              {/* // Row 10 wide */}
+              </div>
+
+            {/* // Contianer fluid */}
+            </div>
     );
   }
 }
