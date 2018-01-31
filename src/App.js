@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
-// require('jquery')
-// require('bootstrap')
-// import styles '.././src/lib/css/bootstrap.min.css'
+
 
 require('dotenv').config()
 
@@ -18,7 +16,6 @@ class App extends Component {
       streetname: '',
       zip: '',
       loading: '',
-      imageStatus: 'Loading',
       houses: []
     };
     // --------- Bind the data to the state on every keydown
@@ -51,7 +48,7 @@ class App extends Component {
     if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
       url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
     } else {
-      url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$limit=1000&$order=nta ASC"
+      url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC"
     }
     axios.get(url, {
         params: {
@@ -102,14 +99,6 @@ class App extends Component {
   handleImageLoaded() {
      this.setState({ imageStatus: "loaded" });
    }
-  // loadingMessage(){
-  //
-  //   if(document.load()document.getElementsByClassName("list-group row col-sm-6")[0].innerHTML()){
-  //     this.state.loading = "Loading"
-  //   }else{
-  //     this.state.loaded = "";
-  //   }
-  // }
 
   // Render to the DOM the jsx and data from api
   render() {
