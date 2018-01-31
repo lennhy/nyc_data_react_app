@@ -54,7 +54,7 @@ class App extends Component {
     }
     axios.get(url, {
         params: {
-          "$limit": 10,
+          "$limit": "",
           "$$app_token": process.env.NYC_DATA_APP_TOKEN
         }
       })
@@ -91,7 +91,9 @@ class App extends Component {
             <div className="container-fluid">
 
               {/* // Begining of Header */}
-
+              <nav className="navbar fixed-top navbar-custom bg-light">
+                <div className="navbar-brand" href="#">City of New York Housing Violations</div>
+              </nav>
 
               <div className="row">
                 <nav className="col-md-2 bd-sidebar">

@@ -2,20 +2,26 @@ body, .container-fluid{
   margin: 0;
   padding: 0;
 }
+.navbar {
+  color: #fff;
+  background: #000;
+  margin: 0;
+  padding: 10px;
+}
 .bd-content{
   position: absolute;
-  left:10%;
+  left:15%;
   width: 60%;
+  top:80px;
   margin: 0 20px 0 20px;
 }
 .bd-sidebar{
-  position:absolute;
+  position:fixed;
   background: #333;
   padding: 20px 20px 100% 20px;
-  margin: 0;
   left:0;
-  top:0;
-  width: 178px;
+  top:60px;
+  width: 40%;
   z-index: 1000;
 }
 @keyframes App-logo-spin {
