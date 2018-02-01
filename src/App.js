@@ -38,7 +38,7 @@ class App extends Component {
   // ----------- Handle submission of form
   handleSubmit(event) {
     event.preventDefault();
-    if(!this.state.boro || !this.state.housenumber ||  !this.state.streetname || !this.state.zip){
+    if(this.state.boro==="" || this.state.housenumber ===""||  this.state.streetname==="" || this.state.zip===""){
       alert("Something is missing from the form");
     }
   }
@@ -110,7 +110,9 @@ class App extends Component {
 
               {/* // Begining of Header */}
               <nav className="navbar fixed-top navbar-custom bg-light">
-                <div className="navbar-brand" href="#">City of New York Housing Violations / Beta Version</div>
+                <div className="navbar-brand" href="#"><span className="highLight">City of New York Housing Violations</span> </div>
+                <span className="pull-right" href="#"> Beta Version 1.0</span>
+
               </nav>
 
               <div className="row">
@@ -119,7 +121,6 @@ class App extends Component {
 
               {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of Form Container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
                 <nav className="col-md-2 bd-sidebar">
-                <h2 className="sideBar">Search for a building</h2>
 
                 <div className="exit" onClick={this.toggleFormBox}>x</div>
 
@@ -180,7 +181,20 @@ class App extends Component {
                   <input type="submit" value="Submit" onClick={this.update.bind(this)} className="btn btn-primary" />
                   </form>
                 {/* / <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Side bar End of Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>/ */}
+                <h2 className="sideBar">Search for a building</h2>
 
+                <div className="jumbotron">
+                <header className="header">
+                  <div className="container">
+                    <ul className="list-inline">
+                    <li className="text-muted"><a href="http://www.polyverge.com" target="_blank">Created by Lenn Hypolite | Website: www.Polyverge.com</a></li>
+                    <li className="text-muted"><a href="https://dev.socrata.com/foundry/data.cityofnewyork.us/b2iz-pps8" target="_blank">Powered by dev.Socrata.com | Data from NYC Open Data API </a></li>
+
+                    <li className="text-muted" id="date"></li>
+                    </ul>
+                  </div>
+                </header>
+                </div>
                 </nav>
 
                 {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of List of elements from data returned from API >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
@@ -219,6 +233,7 @@ class App extends Component {
 
               {/* // Row 10 wide */}
               </div>
+
 
             {/* // Contianer fluid */}
             </div>

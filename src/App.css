@@ -7,22 +7,32 @@ body, .container-fluid{
   color:#5D6D7E  ;
 }
 h2{
-  letter-spacing: .06em;
+  letter-spacing: .03em;
   font-size: 1rem;
   font-weight: 700;
   text-transform: capitalize;
 }
 h2.sideBar {
-  letter-spacing: .06em;
+  letter-spacing: .03em;
   margin: 20px 0 20px 0;
 }
 h3{
   font-size: .85rem;
   font-weight: 700;
 }
-
+.highLight{
+  color: #EB5E66;
+}
 
 /* LAYOUT */
+.jumbotron a{
+  background-color: #e6e9ed;
+  color: #000;
+}
+.jumbotron{
+  margin: 50px 0 0 0 ;
+  padding: 20px 15px 15px 15px;
+}
 .navbar {
   color:#5D6D7E  ;
   /* text-transform: uppercase; */
@@ -71,9 +81,9 @@ h3{
   border-right-style: inset;
   /* 4px solid #fff; */
   border-right:1px solid rgba(0, 0, 0, 0.125);
-  padding: 20px 20px 100% 20px;
+  padding: 60px 20px 100% 20px;
   left:0;
-  top:50px;
+  top:30px;
   width: 40%;
   z-index: 1000;
 }
@@ -136,13 +146,14 @@ No media query since this is the default in Bootstrap */
     background: #cb444b;
   }
   .bd-sidebar{
-    top:30px;
     width: 75%;
     display: none;
   }
   .exit{
     display: block;
+    width: 2px;
     position: relative;
+    top:0px;
     z-index: 20000;
     text-align: right;
     width: 100%;
