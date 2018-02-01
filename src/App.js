@@ -38,7 +38,9 @@ class App extends Component {
   // ----------- Handle submission of form
   handleSubmit(event) {
     event.preventDefault();
-    alert('Your favorite flavor is: ' + this.state.boro + this.state.housenumber + " , " + this.state.streetname + " , " + this.state.zip);
+    if(!this.state.boro || !this.state.housenumber ||  !this.state.streetname || !this.state.zip){
+      alert("Something is missing from the form");
+    }
   }
 
   // ---------- Run the Socrata API
@@ -117,6 +119,8 @@ class App extends Component {
 
               {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of Form Container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
                 <nav className="col-md-2 bd-sidebar">
+                <h2 className="sideBar">Search for a building</h2>
+
                 <div className="exit" onClick={this.toggleFormBox}>x</div>
 
                   <form onSubmit={this.handleSubmit}>

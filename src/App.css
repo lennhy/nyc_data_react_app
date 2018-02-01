@@ -3,24 +3,35 @@ body, .container-fluid{
   padding: 0;
   background: #e6e9ed;
   font-size: .9em;
+  font-family: 'Oxygen', sans-serif;
+  color:#5D6D7E  ;
 }
 h2{
+  letter-spacing: .06em;
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+h2.sideBar {
+  letter-spacing: .06em;
+  margin: 20px 0 20px 0;
 }
 h3{
   font-size: .85rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 
 /* LAYOUT */
 .navbar {
-  color: #fff;
-  background: #333;
+  color:#5D6D7E  ;
+  /* text-transform: uppercase; */
+  font-weight: 700;
+  background: #ffff;
+  box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.125);
   margin: 0;
   padding: 10px;
-  border-bottom:1px solid rgba(0, 0, 0, 0.125);
+  border-bottom:1px solid #5D6D7E;
 }
 .bd-content{
   position: absolute;
@@ -38,7 +49,7 @@ h3{
 
 /* COMPONENTS */
 .btn-primary{
-  background: #30B8DC;
+  background: #EB5E66;
   border: none;
 }
 .btn-primary:hover{
@@ -71,12 +82,17 @@ h3{
 /* LISTS */
 .list-group{
   /* width:  60%; */
+  letter-spacing: .02em;
   background: #f8f9fa;
   margin-bottom: 20px;
   padding: 20px;
+  border-left:3px solid #EB5E66;
+
 }
 .list-group-item{
   padding: 10px;
+  text-transform: lowercase;
+
   /* margin: 10px 0 0 0 ; */
   /* width: 30%; */
 }
@@ -84,7 +100,8 @@ h3{
 
 /* STYLING */
 .bold{
-  font-weight: bold;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
@@ -129,7 +146,7 @@ No media query since this is the default in Bootstrap */
     z-index: 20000;
     text-align: right;
     width: 100%;
-    color: #333;
+    color:#5D6D7E  ;
     font-size: 2rem;
   }
   .btn-primary{
