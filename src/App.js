@@ -15,6 +15,9 @@ class App extends Component {
       housenumber: '',
       streetname: '',
       zip: '',
+      hiding:{
+        class: 'cover'
+      },
       loading:{
         status: 'loading',
         class:'loader'
@@ -43,19 +46,71 @@ class App extends Component {
   // ----------- Handle submission of form
   handleSubmit(event) {
     event.preventDefault();
-    alert(this.state.boro + this.state.housenumber + this.state.streetname + this.state.zip);
-
-    if(this.state.boro==="" || this.state.housenumber ===""||  this.state.streetname==="" || this.state.zip===""){
-      alert("Something is missing from the form");
-    }
   }
 
   // ---------- Run the Socrata API
   runApi() {
+    // if(document.getElementsByClassName('form.')){
+    //   document.getElementById('cover').style.bacground = "blue";
+    // }
     var url;
     if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
       url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
-    } else {
+      // alert('You entered address ' + this.state.boro + this.state.housenumber + this.state.streetname + this.state.zip);
+    }
+    if (this.state.boro) {
+      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&$order=apartment ASC`;
+      // alert('This will return buildings in the '+ this.state.boro + ' area');
+      this.setState({
+        hiding:{
+          class: 'cover'
+        },
+        loading: {
+          status: 'loading',
+          class: 'loader'
+        }
+      });
+    }
+    else if ( this.state.housenumber) {
+      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?housenumber=${this.state.housenumber}&$order=apartment ASC`;
+      // alert('This will return buildings numbered '+ this.state.housenumber + ' area');
+      this.setState({
+        hiding:{
+          class: 'cover'
+        },
+        loading: {
+          status: 'loading',
+          class: 'loader'
+        }
+      });
+    }
+    else if ( this.state.streetname ) {
+      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?streetname=${this.state.streetname}&$order=apartment ASC`;
+      // alert('This will return buildings on '+ this.state.streename);
+      this.setState({
+        hiding:{
+          class: 'cover'
+        },
+        loading: {
+          status: 'loading',
+          class: 'loader'
+        }
+      });
+    }
+    else if (this.state.zip) {
+      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?zip=${this.state.zip}&$order=apartment ASC`;
+      // alert('This will return buildings with a zip code of '+ this.state.zip + );
+      this.setState({
+        hiding:{
+          class: 'cover'
+        },
+        loading: {
+          status: 'loading',
+          class: 'loader'
+        }
+      });
+    }
+    else {
       url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
     }
     axios.get(url, {
@@ -70,9 +125,12 @@ class App extends Component {
           this.setState({
             isLoaded: true,
             houses: result.data,
+            hiding:{
+              class: ''
+            },
             loading: {
               status: '',
-              class: 'none'
+              class: ''
             }
           });
         },
@@ -100,12 +158,12 @@ class App extends Component {
     console.log(e.target.className)
     console.log(e.target.className === "formButton")
     if(e.target.className === "exit"){
-      document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "none";
+      document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "";
       document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "block";
 
     }
     if(e.target.className === "formButton btn btn-primary"){
-      document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "none";
+      document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "";
       document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "block";
     }
   }
@@ -115,8 +173,8 @@ class App extends Component {
   render() {
     const { error, isLoaded, houses } = this.state;
     return (
-
             <div className="container-fluid">
+            <div className={this.state.hiding.class}></div>
 
               {/* // Begining of Header */}
               <nav className="navbar fixed-top navbar-custom bg-light">
@@ -128,7 +186,7 @@ class App extends Component {
 
               <div className="row">
 
-              <div className="formButton btn btn-primary" onClick={this.toggleFormBox}>Search for a building</div>
+              <div className="formButton btn btn-primary" onClick={this.toggleFormBox}>Enter text in one field or all.</div>
 
               {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of Form Container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
                 <nav className="col-md-2 bd-sidebar">
@@ -212,7 +270,6 @@ class App extends Component {
                 <div className="col-md-10 bd-content">
                 <h1 className="loading-header">{this.state.loading.status}</h1>
                 <div className={this.state.loading.class}></div>
-
                   {houses.map((house, index )=> (
 
                     <ul className="list-group">
@@ -247,7 +304,6 @@ class App extends Component {
 
               {/* // Row 10 wide */}
               </div>
-
 
             {/* // Contianer fluid */}
             </div>
