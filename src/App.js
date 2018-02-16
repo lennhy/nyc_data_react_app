@@ -15,7 +15,10 @@ class App extends Component {
       housenumber: '',
       streetname: '',
       zip: '',
-      loading: '',
+      loading:{
+        status: 'loading',
+        class:'loader'
+      },
       houses: []
     };
     // --------- Bind the data to the state on every keydown
@@ -23,7 +26,9 @@ class App extends Component {
     this.handleChange = this.handleChange.bind(this);
     // --------- Bind the data to the state when form is submitted
     this.handleSubmit = this.handleSubmit.bind(this);
+    // this.state.loading = "loading"
   }
+
 
   // ----------- Handle input from form
   handleChange(event) {
@@ -38,6 +43,8 @@ class App extends Component {
   // ----------- Handle submission of form
   handleSubmit(event) {
     event.preventDefault();
+    alert(this.state.boro + this.state.housenumber + this.state.streetname + this.state.zip);
+
     if(this.state.boro==="" || this.state.housenumber ===""||  this.state.streetname==="" || this.state.zip===""){
       alert("Something is missing from the form");
     }
@@ -45,15 +52,15 @@ class App extends Component {
 
   // ---------- Run the Socrata API
   runApi() {
-    console.log(this.state);
     var url;
     if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
       url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
     } else {
-      url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC"
+      url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
     }
     axios.get(url, {
         params: {
+          "$limit" : 1000,
           "$$app_token": process.env.NYC_DATA_APP_TOKEN
         }
       })
@@ -62,7 +69,11 @@ class App extends Component {
           console.log(result, url)
           this.setState({
             isLoaded: true,
-            houses: result.data
+            houses: result.data,
+            loading: {
+              status: '',
+              class: 'none'
+            }
           });
         },
         (error) => {
@@ -98,18 +109,18 @@ class App extends Component {
       document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "block";
     }
   }
-  handleImageLoaded() {
-     this.setState({ imageStatus: "loaded" });
-   }
+
 
   // Render to the DOM the jsx and data from api
   render() {
     const { error, isLoaded, houses } = this.state;
     return (
-            <div className="container-fluid" onLoad={this.handleImageLoaded.bind(this)}>
+
+            <div className="container-fluid">
 
               {/* // Begining of Header */}
               <nav className="navbar fixed-top navbar-custom bg-light">
+
                 <div className="navbar-brand" href="#"><span className="highLight">City of New York Housing Violations</span> </div>
                 <span className="pull-right" href="#"> Beta Version 1.0</span>
 
@@ -187,8 +198,8 @@ class App extends Component {
                 <header className="header">
                   <div className="container">
                     <ul className="list-inline">
-                    <li className="text-muted"><a href="http://www.polyverge.com" target="_blank">Created by Lenn Hypolite | Website: www.Polyverge.com</a></li>
-                    <li className="text-muted"><a href="https://dev.socrata.com/foundry/data.cityofnewyork.us/b2iz-pps8" target="_blank">Powered by dev.Socrata.com | Data from NYC Open Data API </a></li>
+                    <li className="text-muted"><a href="http://www.polyverge.com" target="_blank"  rel="noopener noreferrer">Created by Lenn Hypolite | Website: www.Polyverge.com</a></li>
+                    <li className="text-muted"><a href="https://dev.socrata.com/foundry/data.cityofnewyork.us/b2iz-pps8" target="_blank"  rel="noopener noreferrer">Powered by dev.Socrata.com | Data from NYC Open Data API </a></li>
 
                     <li className="text-muted" id="date"></li>
                     </ul>
@@ -199,6 +210,9 @@ class App extends Component {
 
                 {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of List of elements from data returned from API >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
                 <div className="col-md-10 bd-content">
+                <h1 className="loading-header">{this.state.loading.status}</h1>
+                <div className={this.state.loading.class}></div>
+
                   {houses.map((house, index )=> (
 
                     <ul className="list-group">

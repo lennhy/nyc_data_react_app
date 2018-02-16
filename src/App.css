@@ -1,7 +1,7 @@
 body, .container-fluid{
   margin: 0;
   padding: 0;
-  background: #e6e9ed;
+  background: #f0f2f3;
   font-size: .9em;
   font-family: 'Oxygen', sans-serif;
   color:#5D6D7E  ;
@@ -41,7 +41,6 @@ h3{
   box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.125);
   margin: 0;
   padding: 10px;
-  border-bottom:1px solid #5D6D7E;
 }
 .bd-content{
   position: absolute;
@@ -93,14 +92,16 @@ h3{
 .list-group{
   /* width:  60%; */
   letter-spacing: .02em;
-  background: #f8f9fa;
+  background: #fff;
   margin-bottom: 20px;
-  padding: 20px;
+  padding: 40px;
+  box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.125);
   border-left:3px solid #EB5E66;
 
 }
 .list-group-item{
-  padding: 10px;
+  padding: 0px;
+  line-height: 2.25em;
   text-transform: lowercase;
 
   /* margin: 10px 0 0 0 ; */
@@ -108,14 +109,33 @@ h3{
 }
 
 
-/* STYLING */
-.bold{
-  font-weight: 700;
-  text-transform: uppercase;
-}
+/* EXTRA STYLING */
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+.list-group-item{
+  background: none;
+  border: none;
+}
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #EB5E66; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin:0 auto;
+    animation: spin 2s linear infinite;
+}
+.loading-header{
+    margin:20px auto;
+    width: 120px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 
