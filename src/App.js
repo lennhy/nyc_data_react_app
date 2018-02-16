@@ -189,11 +189,13 @@ class App extends Component {
               <div className="formButton btn btn-primary" onClick={this.toggleFormBox}>Enter text in one field or all.</div>
 
               {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of Form Container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+
                 <nav className="col-md-2 bd-sidebar">
 
                 <div className="exit" onClick={this.toggleFormBox}>x</div>
 
                   <form onSubmit={this.handleSubmit}>
+                  <p className="sideBar"><b>Fill out a single input field or all input fields</b></p>
 
                   {/* // Boro code Input */}
                   <div className="form-group ">
@@ -250,7 +252,6 @@ class App extends Component {
                   <input type="submit" value="Submit" onClick={this.update.bind(this)} className="btn btn-primary" />
                   </form>
                 {/* / <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Side bar End of Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>/ */}
-                <h2 className="sideBar">Search for a building</h2>
 
                 <div className="jumbotron">
                 <header className="header">
