@@ -25,7 +25,6 @@ class App extends Component {
       houses: []
     };
     // --------- Bind the data to the state on every keydown
-    console.log(this)
     this.handleChange = this.handleChange.bind(this);
     // --------- Bind the data to the state when form is submitted
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,7 +34,6 @@ class App extends Component {
 
   // ----------- Handle input from form
   handleChange(event) {
-    console.log(event.target.value)
     const target = event.target;
     const name = target.name;
     this.setState({
@@ -51,13 +49,13 @@ class App extends Component {
     var arr=[];
     for(let i=0; i < dateObj.length; i++){
         if(dateObj[i]["novissueddate"] ){
-          dateObj[i]["novissueddate"] = dateObj[0]["novissueddate"].toISOString().substring(0, 10)
+          dateObj[i]["novissueddate"] = dateObj[i]["novissueddate"].toString().substring(5, 10) + "-" + dateObj[i]["novissueddate"].toString().substring(0, 4)
         }
         if(dateObj[i]["inspectiondate"] ){
-          dateObj[i]["inspectiondate"] = dateObj[0]["inspectiondate"].toString().substring(0, 10)
+          dateObj[i]["inspectiondate"] = dateObj[i]["inspectiondate"].toString().substring(5, 10)  + "-" + dateObj[i]["inspectiondate"].toString().substring(0, 4)
         }
         if(dateObj[i]["approveddate"] ){
-          dateObj[i]["approveddate"] = dateObj[0]["approveddate"].toString().substring(0, 10)
+          dateObj[i]["approveddate"] = dateObj[i]["approveddate"].toString().substring(5, 10)  + "-" + dateObj[i]["approveddate"].toString().substring(0, 4)
         }
     }
 
@@ -137,7 +135,6 @@ class App extends Component {
       })
       .then(
         (result) => {
-          console.log(result, url)
           this.setState({
             isLoaded: true,
             houses: this.formatDate(result.data),
@@ -171,8 +168,6 @@ class App extends Component {
 
   // exit button toggle form search box for mobile
   toggleFormBox(e){
-    console.log(e.target.className)
-    console.log(e.target.className === "formButton")
     if(e.target.className === "exit"){
       document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "";
       document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "block";
