@@ -47,6 +47,22 @@ class App extends Component {
   handleSubmit(event) {
     event.preventDefault();
   }
+  formatDate(dateObj){
+    var arr=[];
+    for(let i=0; i < dateObj.length; i++){
+        if(dateObj[i]["novissueddate"] ){
+          dateObj[i]["novissueddate"] = dateObj[0]["novissueddate"].toISOString().substring(0, 10)
+        }
+        if(dateObj[i]["inspectiondate"] ){
+          dateObj[i]["inspectiondate"] = dateObj[0]["inspectiondate"].toString().substring(0, 10)
+        }
+        if(dateObj[i]["approveddate"] ){
+          dateObj[i]["approveddate"] = dateObj[0]["approveddate"].toString().substring(0, 10)
+        }
+    }
+
+    return dateObj;
+  }
 
   // ---------- Run the Socrata API
   runApi() {
@@ -124,7 +140,7 @@ class App extends Component {
           console.log(result, url)
           this.setState({
             isLoaded: true,
-            houses: result.data,
+            houses: this.formatDate(result.data),
             hiding:{
               class: ''
             },
