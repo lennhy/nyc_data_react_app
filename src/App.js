@@ -44,6 +44,10 @@ class App extends Component {
   // ----------- Handle submission of form
   handleSubmit(event) {
     event.preventDefault();
+    if(this.state.boro==="" || this.state.housenumber==="" || this.state.streetname ==="" || this.state.zip ===""){
+      alert("Something is missing.");
+      // url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
+    }
   }
   formatDate(dateObj){
     var arr=[];
@@ -64,49 +68,50 @@ class App extends Component {
 
   // ---------- Run the Socrata API
   runApi() {
-    var url;
-    this.setState({
-      hiding:{
-        class: 'cover'
-      },
-      loading: {
-        status: 'loading',
-        class: 'loader'
-      }
-    });
+
 
     if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
       url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
       // alert('You entered address ' + this.state.boro + this.state.housenumber + this.state.streetname + this.state.zip);
+      var url;
+      this.setState({
+        hiding:{
+          class: 'cover'
+        },
+        loading: {
+          status: 'loading',
+          class: 'loader'
+        }
+      });
     }
 
-    else if (this.state.boro !=="" && this.state.housenumber==="" && this.state.streetname ==="" && this.state.zip ==="") {
-      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&$order=apartment ASC`;
-      // alert('This will return buildings in the '+ this.state.boro + ' area');
-      this.setState({
-        hiding:{
-          class: 'cover'
-        },
-        loading: {
-          status: 'loading',
-          class: 'loader'
-        }
-      });
-    }
-    
-    else if (this.state.zip !=="" && this.state.boro==="" && this.state.housenumber==="" && this.state.streetname ==="" ) {
-      url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?zip=${this.state.zip}&$order=apartment ASC`;
-      // alert('This will return buildings with a zip code of '+ this.state.zip + );
-      this.setState({
-        hiding:{
-          class: 'cover'
-        },
-        loading: {
-          status: 'loading',
-          class: 'loader'
-        }
-      });
-    }
+    // else if (this.state.boro !=="" && this.state.housenumber==="" && this.state.streetname ==="" && this.state.zip ==="") {
+    //   url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&$order=apartment ASC`;
+    //   // alert('This will return buildings in the '+ this.state.boro + ' area');
+    //   this.setState({
+    //     hiding:{
+    //       class: 'cover'
+    //     },
+    //     loading: {
+    //       status: 'loading',
+    //       class: 'loader'
+    //     }
+    //   });
+    // }
+    //
+    // else if (this.state.zip !=="" && this.state.boro==="" && this.state.housenumber==="" && this.state.streetname ==="" ) {
+    //   url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?zip=${this.state.zip}&$order=apartment ASC`;
+    //   // alert('This will return buildings with a zip code of '+ this.state.zip + );
+    //   this.setState({
+    //     hiding:{
+    //       class: 'cover'
+    //     },
+    //     loading: {
+    //       status: 'loading',
+    //       class: 'loader'
+    //     }
+    //   });
+    // }
 
     else {
       url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
@@ -143,6 +148,16 @@ class App extends Component {
   //  Return data to DOM
   componentDidMount() {
     this.runApi()
+    // var url;
+    this.setState({
+      hiding:{
+        class: 'cover'
+      },
+      loading: {
+        status: 'loading',
+        class: 'loader'
+      }
+    });
   }
 
   // Update the DOM with data from API after form submit values that change the parameters in the API url
