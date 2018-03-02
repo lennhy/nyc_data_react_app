@@ -189,8 +189,8 @@ class App extends Component {
               {/* // Begining of Header */}
               <nav className="navbar fixed-top navbar-custom bg-light">
 
-                <div className="navbar-brand" href="#"><span className="highLight">City of New York Housing Violations</span> </div>
-                <span className="pull-right" href="#"> Beta Version 1.0</span>
+                <div className="navbar-brand" href="#"><span className="highLight">NYC Houspector</span> </div>
+                <span className="pull-right" href="#"> </span>
 
               </nav>
 
@@ -205,7 +205,7 @@ class App extends Component {
                 <div className="exit" onClick={this.toggleFormBox}>x</div>
 
                   <form onSubmit={this.handleSubmit}>
-                  <p className="sideBar"><b>Fill out a single input field or all input fields</b></p>
+                  <p className="sideBar"><b>Fill out all input fields</b></p>
 
                   {/* // Boro code Input */}
                   <div className="form-group ">
