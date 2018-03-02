@@ -7,7 +7,7 @@ import axios from 'axios';
 require('dotenv').config()
 
 // ---------- Start of component
-class App extends Component {
+class Form extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -41,6 +41,7 @@ class App extends Component {
     });
   }
 
+
   // ----------- Handle submission of form
   handleSubmit(event) {
     event.preventDefault();
@@ -49,6 +50,8 @@ class App extends Component {
       // url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
     }
   }
+
+
   formatDate(dateObj){
     var arr=[];
     for(let i=0; i < dateObj.length; i++){
@@ -66,14 +69,12 @@ class App extends Component {
     return dateObj;
   }
 
+
   // ---------- Run the Socrata API
   runApi() {
-
-
+    var url;
     if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
       url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
-      // alert('You entered address ' + this.state.boro + this.state.housenumber + this.state.streetname + this.state.zip);
-      var url;
       this.setState({
         hiding:{
           class: 'cover'
@@ -84,35 +85,6 @@ class App extends Component {
         }
       });
     }
-
-    // else if (this.state.boro !=="" && this.state.housenumber==="" && this.state.streetname ==="" && this.state.zip ==="") {
-    //   url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&$order=apartment ASC`;
-    //   // alert('This will return buildings in the '+ this.state.boro + ' area');
-    //   this.setState({
-    //     hiding:{
-    //       class: 'cover'
-    //     },
-    //     loading: {
-    //       status: 'loading',
-    //       class: 'loader'
-    //     }
-    //   });
-    // }
-    //
-    // else if (this.state.zip !=="" && this.state.boro==="" && this.state.housenumber==="" && this.state.streetname ==="" ) {
-    //   url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?zip=${this.state.zip}&$order=apartment ASC`;
-    //   // alert('This will return buildings with a zip code of '+ this.state.zip + );
-    //   this.setState({
-    //     hiding:{
-    //       class: 'cover'
-    //     },
-    //     loading: {
-    //       status: 'loading',
-    //       class: 'loader'
-    //     }
-    //   });
-    // }
-
     else {
       url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
     }
@@ -145,6 +117,7 @@ class App extends Component {
       )
   }
 
+
   //  Return data to DOM
   componentDidMount() {
     this.runApi()
@@ -160,10 +133,12 @@ class App extends Component {
     });
   }
 
+
   // Update the DOM with data from API after form submit values that change the parameters in the API url
   update() {
     this.runApi()
   }
+
 
   // exit button toggle form search box for mobile
   toggleFormBox(e){
@@ -259,7 +234,7 @@ class App extends Component {
                     </label>
                   </div>
 
-                  <input type="submit" value="Submit" onClick={this.update.bind(this)} className="btn btn-primary" />
+                  <input type="submit" value="Search Apartment" onClick={this.update.bind(this)} className="btn btn-primary" />
                   </form>
                 {/* / <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Side bar End of Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>/ */}
 
@@ -316,11 +291,10 @@ class App extends Component {
               {/* // Row 10 wide */}
               </div>
 
-            {/* // Contianer fluid */}
-            </div>
-
+          {/* // Contianer fluid */}
+          </div>
     );
   }
 }
 
-export default App;
+export default Form;

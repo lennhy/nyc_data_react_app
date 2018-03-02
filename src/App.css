@@ -1,7 +1,7 @@
 body, .container-fluid{
   margin: 0;
   padding: 0;
-  background: #f0f2f3;
+  background: #f5f6f7;
   font-size: .9em;
   font-family: 'Oxygen', sans-serif;
   color:#5D6D7E  ;
@@ -47,14 +47,20 @@ h3{
   margin: 50px 0 0 0 ;
   padding: 20px 15px 15px 15px;
 }
+.highLight{
+  color: #333;  
+}
 .navbar {
   color:#5D6D7E  ;
   /* text-transform: uppercase; */
   font-weight: 700;
   background: #ffff;
-  box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.125);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.125);
   margin: 0;
   padding: 10px;
+}
+.navbar-brand{
+  padding-left: 10px;
 }
 .bd-content{
   position: absolute;
@@ -108,7 +114,7 @@ h3{
   background: #fff;
   margin-bottom: 20px;
   padding: 40px;
-  box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.125);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.125);
   border-radius: 5px;
   /* border-left:3px solid #EB5E66; */
 
@@ -191,6 +197,7 @@ No media query since this is the default in Bootstrap */
   .bd-sidebar{
     width: 75%;
     display: none;
+    background: #f5f6f7;
   }
   .exit{
     display: block;
