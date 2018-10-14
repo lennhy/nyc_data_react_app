@@ -1,0 +1,280 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+} */
+
+body, .container-fluid{
+  margin: 0;
+  padding: 0;
+  background: #f5f6f7;
+  font-size: .9em;
+  font-family: 'Oxygen', sans-serif;
+  color:#5D6D7E  ;
+}
+h2{
+  letter-spacing: .03em;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+h2.sideBar {
+  letter-spacing: .03em;
+  margin: 20px 0 20px 0;
+}
+h3{
+  font-size: .85rem;
+  font-weight: 700;
+}
+.highLight{
+  color: #EB5E66;
+}
+
+/* LAYOUT */
+.cover{
+  -webkit-filter: opacity(80%);
+  -moz-filter: opacity(80%);
+  -ms-filter: opacity(80%);
+  filter: opacity(80%);
+  margin: 0;
+  padding: 0;
+  background: #1E2122;
+  width: 100%;
+  height: 100%;
+  font-size: .9em;
+  z-index: 88888;
+  position: fixed;
+}
+.jumbotron a{
+  background-color: #e6e9ed;
+  color: #000;
+}
+.jumbotron{
+  margin: 50px 0 0 0 ;
+  padding: 20px 15px 15px 15px;
+}
+.highLight{
+  color: #333;
+}
+.navbar {
+  color:#5D6D7E  ;
+  /* text-transform: uppercase; */
+  font-weight: 700;
+  background: #ffff;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.125);
+  margin: 0;
+  padding: 10px;
+}
+.navbar-brand{
+  padding-left: 10px;
+}
+.bd-content{
+  position: absolute;
+  left:15%;
+  width: 70%;
+  top: 100px;
+  margin: 0 20px 0 40px;
+}
+.custom{
+  top: 100px;
+  z-index: 2000;
+  width: 100px;
+  margin: 0 auto;
+}
+
+/* COMPONENTS */
+.btn-primary{
+  background: #EB5E66;
+  border: none;
+}
+.btn-primary:hover{
+    background: #31708f;
+}
+.exit{
+  display: none;
+}
+.exit:hover{
+  cursor: pointer;
+}
+.formButton{
+  display: none;
+}
+.bd-sidebar{
+  display: block;
+  position:fixed;
+  /* background: #e6e9ed; */
+  /* 4px solid #fff; */
+  /* border-right:1px solid rgba(0, 0, 0, 0.125); */
+  padding: 60px 20px 100% 20px;
+  left:0;
+  top:30px;
+  width: 40%;
+  z-index: 1000;
+}
+
+
+/* LISTS */
+.list-group{
+  /* width:  60%; */
+  letter-spacing: .02em;
+  background: #fff;
+  margin-bottom: 20px;
+  padding: 40px;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.125);
+  border-radius: 5px;
+  /* border-left:3px solid #EB5E66; */
+
+}
+.list-group-item{
+  padding: 0px;
+  line-height: 2.25em;
+  text-transform: lowercase;
+
+  /* margin: 10px 0 0 0 ; */
+  /* width: 30%; */
+}
+
+
+/* EXTRA STYLING */
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.list-group-item{
+  background: none;
+  border: none;
+}
+.loader {
+    position: fixed;
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #EB5E66; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin:80px auto;
+    animation: spin 2s linear infinite;
+    z-index: 99999;
+    left: 0;
+    right: 0;
+}
+.loading-header{
+  color: #fff;
+    position: fixed;
+    margin:30px auto;
+    width: 120px;
+    z-index: 99999;
+    left: 0;
+    right: 0;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.notice {
+    display: none;
+    position: relative;
+    color: #fff;
+    background: #333;
+    padding: 20px;
+    letter-spacing: .1em;
+    z-index: 1000;
+    margin: 70px auto;
+    border-radius: 3px;
+  }
+
+/*  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<   MEDIA QUERRIES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+/* Extra small devices (portrait phones, less than 576px)
+No media query since this is the default in Bootstrap */
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .bd-content{
+    position: relative;
+    left:0;
+    width: 100%;
+    margin: 0;
+  }
+  .formButton{
+    background: #EB5E66;
+    border:none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 0;
+    position: fixed;
+    top:50px;
+    left: 0;
+    display: block;
+    z-index: 3000;
+  }
+  .formButton#visited{
+    background: #cb444b;
+  }
+  .bd-sidebar{
+    width: 75%;
+    display: none;
+    background: #f5f6f7;
+  }
+  .exit{
+    display: block;
+    width: 2px;
+    position: relative;
+    top:0px;
+    z-index: 20000;
+    text-align: right;
+    width: 100%;
+    color:#5D6D7E  ;
+    font-size: 2rem;
+  }
+  .btn-primary{
+    width: 100%;
+  }
+  .form-control input{
+    width: 100%;
+  }
+  .list-group{
+    margin-top:70px;
+  }
+ }
+
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+ }
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+ }
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+ }
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+ }
