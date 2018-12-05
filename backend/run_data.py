@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import os
 import pandas as pd
 from sodapy import Socrata
@@ -17,12 +16,9 @@ client = Socrata("data.cityofnewyork.us",
 
 # First 2000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
-results = client.get("b2iz-pps8", limit=10)
-
-# Convert to pandas DataFrame
-results_df = pd.DataFrame.from_records(results)
-print(results_df.buildingid)
-
+results = client.get("b2iz-pps8", limit=2)
+df = pd.DataFrame(results)
+print (df)
 try:
     conn = pysco.connect(dbname=os.environ['NYC_DATA_DB'], port='5432', user=os.environ['NYC_DATA_USER'], host=os.environ['NYC_DATA_ENDPOINT'], password='{}'.format(os.environ['MASTER_PASSWORD']))
     print("Connection Established")
@@ -32,17 +28,22 @@ except (Exception, pysco.DatabaseError) as error:
         print(error)
 
 cur = conn.cursor()
+print(df["buildingid"])
+for row in df.items():
+    print(row[1])
 
-for val in results_df:
+# for index, row in enumerate(df):
+#     # if row == "lowhousenumber":
+#     print(df[row])
+    # print(row[0])
 #     INSERT INTO table_name (column1, column2, column3, ...)
 # VALUES (value1, value2, value3, ...);
-    query = """
-    		INSERT INTO #nyc_1000 (val.buildingid, val.violationid, val., val., val., val., val., val., val., val., val., val., val., val., val.)
-            VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')
-            """
-            
-cur.execute(query)
-
+    # if val == "building_id":
+        # cur.execute("CREATE TEMP TABLE temp100(building_id);")
+        # cur.execute("INSERT INTO temp100(building_id) VALUES (%s);"), (df["buildingid"])
+    #     cur.execute("INSERT INTO temp100(building_id) VALUES (%s);"), str(val)
+    #     record = cur.fetchall()
+    #     print(record, "hello")
 # def createquery(query):
 # 	print(query)
 # 	cur.execute(query)
