@@ -29,8 +29,8 @@ except (Exception, pysco.DatabaseError) as error:
 
 cur = conn.cursor()
 print(df["buildingid"])
-for row in df.items():
-    print(row[1])
+# for row in df.items():
+#     print(row[1])
 
 # for index, row in enumerate(df):
 #     # if row == "lowhousenumber":
@@ -51,8 +51,33 @@ for row in df.items():
 # 	print 'description message',  cur.description
 # 	conn.commit()
 
+# cur.execute(
+#     "CREATE TEMP TABLE temp100(
+#      building_id INT PRIMARY KEY NOT NULL,
+#      violation_id INT NOT NULL,
+#      boro TEXT,
+#      house_number TEXT,
+#      street_name TEXT,
+#      zip TEXT,
+#      apartment TEXT,
+#      inspection_date TIMESTAMP,
+#      approved_date TIMESTAMP,
+#      current_status TEXT,
+#      current_status_date TIMESTAMP,
+#      violation_status_date TIMESTAMP,
+#      violation_status TEXT,
+#      original_certify_by_date TIMESTAMP,
+#      community_board TEXT
+#     );"
+# )
+cur.execute(
+    """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status_date, violation_status, original_certify_by_date, community_board)
+    VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') WHERE violation_id NOT IN (
+     SELECT houses.building_id
+     FROM houses WHERE houses.building_id = '%s');""" %(df['buildingid'], df['violationid'], df['boro'], NULL, NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
 
-
+)
+# (building_id, violation_id, boro, house_number)
 
 cur.close()
 # cur.execute('SELECT * FROM notes')
