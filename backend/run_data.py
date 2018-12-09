@@ -28,7 +28,7 @@ except (Exception, pysco.DatabaseError) as error:
         print(error)
 
 cur = conn.cursor()
-print(df["buildingid"])
+print(df["novtype"])
 # for row in df.items():
 #     print(row[1])
 
@@ -70,13 +70,13 @@ print(df["buildingid"])
 #      community_board TEXT
 #     );"
 # )
-cur.execute(
-    """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status_date, violation_status, original_certify_by_date, community_board)
-    VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') WHERE violation_id NOT IN (
-     SELECT houses.building_id
-     FROM houses WHERE houses.building_id = '%s');""" %(df['buildingid'], df['violationid'], df['boro'], NULL, NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
-
-)
+# cur.execute(
+#     """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status_date, violation_status, original_certify_by_date, community_board)
+#     VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') WHERE violation_id NOT IN (
+#      SELECT houses.building_id
+#      FROM houses WHERE houses.building_id = '%s');""" %(df['buildingid'], df['violationid'], df['boro'], df["housenumber"], df["streetname"],df["zip"],df["apartment"],NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL)
+#
+# )
 # (building_id, violation_id, boro, house_number)
 
 cur.close()
