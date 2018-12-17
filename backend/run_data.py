@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from sodapy import Socrata
 import psycopg2 as pysco
+import pandas.io.sql as pdsql
 
 # Unauthenticated client only works with public data sets. Note 'None'
 # in place of application token, and no username or password:
@@ -17,10 +18,7 @@ client = Socrata("data.cityofnewyork.us",
 # First 2000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
 results = client.get("b2iz-pps8", limit=20)
-# print(results)
 df = pd.DataFrame(results)
-print("1st", df["housenumber"])
-# print("2nd",df.loc["housenumber"])
 
 try:
     conn = pysco.connect(dbname=os.environ['NYC_DATA_DB'], port='5432', user=os.environ['NYC_DATA_USER'], host=os.environ['NYC_DATA_ENDPOINT'], password='{}'.format(os.environ['MASTER_PASSWORD']))
@@ -31,22 +29,16 @@ except (Exception, pysco.DatabaseError) as error:
         print(error)
 
 cur = conn.cursor()
-# cur.close()
-    # WHERE violation_id NOT IN (
-     # SELECT houses.building_id
-     # FROM houses WHERE houses.building_id = %s %(df['boro']));
-for i, val in enumerate(df):
-    # print(len(df.length))
-    # if i < len(df.length):
-        # print(i)
-        # print(df[val][i])
-    # print("Here sir ", i)
-    # print("here ", i["housenumber"].values)
-    cur.execute(
-        """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, original_certify_by_date, community_board)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (df['buildingid'][0], df['violationid'][0], df['boro'][0], df["housenumber"][0], df["streetname"][0],df["zip"][0], df["apartment"][0], df["inspectiondate"][0],df["approveddate"][0],df["currentstatus"][0],df["currentstatusdate"][0],df["violationstatus"][0],df["originalcertifybydate"][0],df["communityboard"][0])
-    )
+
+# for i, val in enumerate(df):
+cur.execute(
+    """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, original_certify_by_date, community_board)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (df['buildingid'][1], df['violationid'][1], df['boro'][1], df["housenumber"][1], df["streetname"][1],df["zip"][1], df["apartment"][1], df["inspectiondate"][1],df["approveddate"][1],df["currentstatus"][1],df["currentstatusdate"][1],df["violationstatus"][1],df["originalcertifybydate"][1],df["communityboard"][1])
+)
+
+data = pdsql.read_sql_query("""select * from houses;""", conn)
+print(data)
 
 conn.commit()
 cur.close()
-conn.close
+conn.close()
