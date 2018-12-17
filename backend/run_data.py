@@ -30,11 +30,23 @@ except (Exception, pysco.DatabaseError) as error:
 
 cur = conn.cursor()
 
-# for i, val in enumerate(df):
-cur.execute(
-    """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, original_certify_by_date, community_board)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (df['buildingid'][1], df['violationid'][1], df['boro'][1], df["housenumber"][1], df["streetname"][1],df["zip"][1], df["apartment"][1], df["inspectiondate"][1],df["approveddate"][1],df["currentstatus"][1],df["currentstatusdate"][1],df["violationstatus"][1],df["originalcertifybydate"][1],df["communityboard"][1])
-)
+# print(df.loc[19, 'violationid'])
+# cur.execute(
+#     """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, original_certify_by_date, community_board)
+#     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (df.loc[i, 'buildingid'], df.loc[i,'violationid'], df.loc[i,'boro'], df.loc[i,"housenumber"], df.loc[i,"streetname"], df.loc[i,"zip"], df.loc[i,"apartment"], df.loc[i,"inspectiondate"], df.loc[i,"approveddate"], df.loc[i, "currentstatus"], df.loc[i, "currentstatusdate"], df.loc[i, "violationstatus"], df.loc[i,"originalcertifybydate"], df.loc[i, "communityboard"])
+# )
+for i, row in df.iterrows():
+# try:
+    print(i)
+    cur.execute(
+    """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, violation_status, original_certify_by_date, community_board)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    WHERE violation_id NOT IN ( SELECT houses.violation_id
+    FROM houses WHERE houses.violation_id = %s);""" % (df.loc[i, 'buildingid'], df.loc[i,'violationid'], df.loc[i,'boro'], df.loc[i,"housenumber"], df.loc[i,"streetname"], df.loc[i,"zip"], df.loc[i,"apartment"], df.loc[i,"inspectiondate"], df.loc[i,"approveddate"], df.loc[i, "currentstatus"],  df.loc[i, "violationstatus"], df.loc[i,"originalcertifybydate"], df.loc[i, "communityboard"], df.loc[i,'violationid'])
+    )
+# except:
+#     i > 19
+
 
 data = pdsql.read_sql_query("""select * from houses;""", conn)
 print(data)

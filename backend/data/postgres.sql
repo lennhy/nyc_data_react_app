@@ -1,6 +1,6 @@
 CREATE TABLE houses(
-  building_id INT PRIMARY KEY NOT NULL,
-  violation_id INT NOT NULL,
+  violation_id INT PRIMARY KEY NOT NULL,
+  building_id INT NOT NULL,
   boro TEXT,
   house_number TEXT,
   street_name TEXT,
@@ -14,6 +14,13 @@ CREATE TABLE houses(
   violation_status TEXT,
   original_certify_by_date TIMESTAMP
 );
+
+-- Firstly, remove PRIMARY KEY attribute of former PRIMARY KEY
+ALTER TABLE <table_name> DROP CONSTRAINT <table_name>_pkey;
+-- Then change column name of  your PRIMARY KEY and PRIMARY KEY candidates properly.
+ALTER TABLE <table_name> RENAME COLUMN <primary_key_candidate> TO id;
+-- Lastly set your new PRIMARY KEY
+ALTER TABLE <table_name> ADD PRIMARY KEY (id);
 
 
 apartment             approveddate         bbl      bin block      boro boroid  ...   registrationid           story streetcode           streetname violationid violationstatus    zip
