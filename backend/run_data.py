@@ -4,6 +4,7 @@ import pandas as pd
 from sodapy import Socrata
 import psycopg2 as pysco
 import pandas.io.sql as pdsql
+from psycopg2 import sql
 
 # Unauthenticated client only works with public data sets. Note 'None'
 # in place of application token, and no username or password:
@@ -19,7 +20,7 @@ client = Socrata("data.cityofnewyork.us",
 # dictionaries by sodapy.
 results = client.get("b2iz-pps8", limit=20)
 df = pd.DataFrame(results)
-
+print(df)
 try:
     conn = pysco.connect(dbname=os.environ['NYC_DATA_DB'], port='5432', user=os.environ['NYC_DATA_USER'], host=os.environ['NYC_DATA_ENDPOINT'], password='{}'.format(os.environ['MASTER_PASSWORD']))
     print("Connection Established")
@@ -30,11 +31,6 @@ except (Exception, pysco.DatabaseError) as error:
 
 cur = conn.cursor()
 
-# print(df.loc[19, 'violationid'])
-# cur.execute(
-#     """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, original_certify_by_date, community_board)
-#     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (df.loc[i, 'buildingid'], df.loc[i,'violationid'], df.loc[i,'boro'], df.loc[i,"housenumber"], df.loc[i,"streetname"], df.loc[i,"zip"], df.loc[i,"apartment"], df.loc[i,"inspectiondate"], df.loc[i,"approveddate"], df.loc[i, "currentstatus"], df.loc[i, "currentstatusdate"], df.loc[i, "violationstatus"], df.loc[i,"originalcertifybydate"], df.loc[i, "communityboard"])
-# )
 for i, row in df.iterrows():
 # try:
     print(i)
@@ -46,7 +42,6 @@ for i, row in df.iterrows():
     )
 # except:
 #     i > 19
-
 
 data = pdsql.read_sql_query("""select * from houses;""", conn)
 print(data)
