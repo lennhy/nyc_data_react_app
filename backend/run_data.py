@@ -68,7 +68,7 @@ client = Socrata("data.cityofnewyork.us",
 
 # First 2000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
-results = client.get("b2iz-pps8", limit=20)
+results = client.get("b2iz-pps8", limit=50000)
 df = pd.DataFrame(results)
 
 try:
@@ -80,12 +80,21 @@ except (Exception, pysco.DatabaseError) as error:
         print(error)
 
 cur = conn.cursor()
-
+# cur.execute(
+#     """INSERT INTO houses(building_id, id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, original_certify_by_date, community_board)
+#     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+#     WHERE (SELECT id FROM houses) NOT IN df['violationid'][i] """, (df['buildingid'][i], df['violationid'][i], df['boro'][i], df["housenumber"][i], df["streetname"][i],df["zip"][i], df["apartment"][i], df["inspectiondate"][i],df["approveddate"][i],df["currentstatus"][i],df["currentstatusdate"][i],df["violationstatus"][i],df["originalcertifybydate"][i],df["communityboard"][i])
+# )
 for i, row in df.iterrows():
 # for i, val in enumerate(df):
+    # cur.execute(
+    #     """ INSERT INTO houses(building_id, id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, original_certify_by_date, community_board)
+    #     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) """, (df['buildingid'][i], df['violationid'][i], df['boro'][i], df["housenumber"][i], df["streetname"][i],df["zip"][i], df["apartment"][i], df["inspectiondate"][i],df["approveddate"][i],df["currentstatus"][i],df["currentstatusdate"][i],df["violationstatus"][i],df["originalcertifybydate"][i],df["communityboard"][i])
+    # )
     cur.execute(
-        """INSERT INTO houses(building_id, id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, original_certify_by_date, community_board)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", (df['buildingid'][i], df['violationid'][i], df['boro'][i], df["housenumber"][i], df["streetname"][i],df["zip"][i], df["apartment"][i], df["inspectiondate"][i],df["approveddate"][i],df["currentstatus"][i],df["currentstatusdate"][i],df["violationstatus"][i],df["originalcertifybydate"][i],df["communityboard"][i])
+        """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, community_board)
+            SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+            WHERE NOT EXISTS (SELECT violation_id FROM houses WHERE houses.violation_id = %s )""", (df['buildingid'][i], df['violationid'][i], df['boro'][i], df["housenumber"][i], df["streetname"][i],df["zip"][i], df["apartment"][i], df["inspectiondate"][i],df["approveddate"][i],df["currentstatus"][i],df["currentstatusdate"][i],df["violationstatus"][i],df["communityboard"][i], df['violationid'][i])
     )
 
 data = pdsql.read_sql_query("""select * from houses;""", conn)
