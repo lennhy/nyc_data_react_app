@@ -10,6 +10,9 @@ import pandas.io.sql as pdsql
 # client = Socrata("data.cityofnewyork.us", None)
 
 # Example authenticated client (needed for non-public datasets):
+# date = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+# url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$where=approveddate between '2018-01-01T12:00:00.000' and '%s'" % date
+
 client = Socrata("data.cityofnewyork.us",
                  os.environ['NYC_DATA_APP_TOKEN'],
                  username=os.environ['EMAIL_1'],
