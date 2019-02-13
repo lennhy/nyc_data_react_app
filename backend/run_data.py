@@ -20,9 +20,8 @@ client = Socrata("data.cityofnewyork.us",
 
 # First 2000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
-results = client.get("b2iz-pps8", limit=50000)
-df = pd.DataFrame(results)
 
+# psql --host=mypostgresql.c6c8mwvfdgv0.us-west-2.rds.amazonaws.com --port=5432 --username=awsuser --password --dbname=mypgdb
 try:
     conn = pysco.connect(dbname=os.environ['NYC_DATA_DB'], port='5432', user=os.environ['NYC_DATA_USER'], host=os.environ['NYC_DATA_ENDPOINT'], password='{}'.format(os.environ['MASTER_PASSWORD']))
     print("Connection Established")
@@ -33,15 +32,34 @@ except (Exception, pysco.DatabaseError) as error:
 
 cur = conn.cursor()
 
-for i, row in df.iterrows():
-    cur.execute(
-    """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, community_board)
-        SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
-        WHERE NOT EXISTS (SELECT violation_id FROM houses WHERE houses.violation_id = %s )""",
-        (df['buildingid'][i], df['violationid'][i], df['boro'][i], df["housenumber"][i], df["streetname"][i],df["zip"][i], df["apartment"][i], df["inspectiondate"][i],df["approveddate"][i],df["currentstatus"][i],df["currentstatusdate"][i],df["violationstatus"][i],df["communityboard"][i], df['violationid'][i])
-    )
+data = pdsql.read_sql_query("""select violation_id from houses limit 10;""", conn)
+# print(data)
+
+def getUniqueViolationId():
+    for i, row in data.iterrows():
+        results = client.get("b2iz-pps8", limit=2, order="approveddate DESC", where="violationid!=%s" % data['violation_id'][i])
+    # return results
+
+    for f in results:
+        print(f['apartment'])
+        cur.execute(
+        """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, community_board)
+            SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+            WHERE NOT EXISTS (SELECT violation_id FROM houses WHERE houses.violation_id = %s )""",
+            (f['buildingid'], f['violationid'], f['boro'], f["housenumber"], f["streetname"], f["zip"], f["apartment"], f["inspectiondate"], f["approveddate"], f["currentstatus"], f["currentstatusdate"], f["violationstatus"], f["communityboard"], f['violationid'])
+        )
+
+getUniqueViolationId()
+
+# for i, row in df.iterrows():
+#     cur.execute(
+#     """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, community_board)
+#         SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+#         WHERE NOT EXISTS (SELECT violation_id FROM houses WHERE houses.violation_id = %s )""",
+#         (df['buildingid'][i], df['violationid'][i], df['boro'][i], df["housenumber"][i], df["streetname"][i],df["zip"][i], df["apartment"][i], df["inspectiondate"][i],df["approveddate"][i],df["currentstatus"][i],df["currentstatusdate"][i],df["violationstatus"][i],df["communityboard"][i], df['violationid'][i])
+#     )
 data = pdsql.read_sql_query("""select * from houses;""", conn)
-print(data)
+# print(data)
 
 conn.commit()
 cur.close()
