@@ -4,8 +4,7 @@ from flask import Flask, render_template
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask("__main__", instance_relative_config=True, instance_path='/build/static', static_url_path='/build', template_folder='build')
-    print app
+    app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, ''),
@@ -27,8 +26,6 @@ def create_app(test_config=None):
     # a simple page that says hello
     @app.route('/')
     def index():
-        # return app.send_static_file('index.html')
         return render_template('index.html')
-        # return render_template('../public/index.html')
 
     return app
