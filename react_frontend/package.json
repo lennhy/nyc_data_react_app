@@ -2,7 +2,7 @@
   "name": "nyc_react_app_3",
   "version": "0.1.0",
   "private": true,
-  "homepage": "../static/react",
+  "homepage": "/static/react",
   "dependencies": {
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",

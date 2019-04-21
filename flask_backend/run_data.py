@@ -45,8 +45,8 @@ cur = conn.cursor()
 
 # data = pdsql.read_sql_query("""select violation_id from houses limit 1;""", conn)
 # data = pdsql.read_sql_query("""SELECT violation_id FROM houses order by violation_id desc limit 1 ;""", conn)
-data = pdsql.read_sql_query("""SELECT COUNT(*) FROM houses;""", conn)
-print(data)
+# data = pdsql.read_sql_query("""SELECT COUNT(*) FROM houses;""", conn)
+# print(data)
 
 # SoQL Clauses
 # Oder by violationid start from the row that is equal to how many rows are in my database and continue in ascending order from where we left off and get data from 2 years back
