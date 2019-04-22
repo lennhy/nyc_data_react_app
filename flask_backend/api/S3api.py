@@ -17,3 +17,15 @@ try:
     break
 except:
     print("Upload was not Successfull")
+
+
+try:
+    s3.meta.client.download_file('nycviolations', 'data.json', 'data/data1.json')
+    print("Successfully downloaded")
+except:
+    print(client.download_file('nycviolations', 'data.json', 'data/data1.json'))
+    print("Download was not Successfull")
+
+
+# with open('data.json', 'wb') as f:
+#     s3.download_fileobj('nycviolations', 'data1.json', f)
