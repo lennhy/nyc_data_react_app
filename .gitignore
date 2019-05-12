@@ -2,7 +2,7 @@
 
 # dependencies
 /frontend/node_modules
-/flask_backend/data/
+/flask_backend/data/*.json
 # testing
 /coverage
 

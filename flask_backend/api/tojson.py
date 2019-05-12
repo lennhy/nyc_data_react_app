@@ -6,7 +6,7 @@ import psycopg2.extras
 import pandas.io.sql as pdsql
 import datetime
 import json
-
+from S3api import S3api
 
 # psql --host=mypostgresql.c6c8mwvfdgv0.us-west-2.rds.amazonaws.com --port=5432 --username=awsuser --password --dbname=mypgdb
 try:
@@ -31,9 +31,10 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     #     else:
     #         val
 
-cur.execute("""SELECT * FROM houses limit(10)""")
+cur.execute("""SELECT * FROM houses limit(23)""")
 rows = cur.fetchall()
 list =[]
+print(rows)
 
 for row in rows:
     dict = {}
@@ -47,7 +48,8 @@ for row in rows:
 with open('data/data.json', 'w') as outfile:
     json.dump(list, outfile)
 
-
+api = S3api()
+api.download()
     # def main():
     #     # call functions
     #
