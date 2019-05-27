@@ -13,7 +13,7 @@ class S3api:
 
     def download(self):
         for bucket in s3.buckets.all():
-            print(bucket.name)
+            print("Bucket Name: ", bucket.name)
 
 
         # Upload a new file
@@ -30,7 +30,7 @@ class S3api:
             s3.meta.client.download_file('nycviolations', 'data.json', 'data/data.json')
             print("Successfully downloaded")
             # Remove from linux server
-            # os.remove('data/data2.json')
+            os.remove('data/data.json')
         except:
             # print(client.download_file('nycviolations', 'data.json', 'data/data1.json'))
             print("Download was not Successfull")

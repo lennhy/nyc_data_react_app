@@ -55,6 +55,7 @@ df = pd.DataFrame(results)
 
 def run_query():
     for i, row in df.iterrows():
+        if df['currentstatusdate'][i] not 'NaN'
             cur.execute(
             """INSERT INTO houses(building_id, violation_id, boro, house_number, street_name, zip, apartment, inspection_date, approved_date, current_status, current_status_date, violation_status, community_board)
                 SELECT %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s

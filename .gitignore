@@ -7,6 +7,7 @@
 /coverage
 
 # production
+flask_backend/api/to_json2.py
 
 # misc
 .DS_Store
