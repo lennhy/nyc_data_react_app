@@ -9,9 +9,10 @@ import json
 from S3api import S3api
 # Print error messages in Ec2 instance for cronjobs ran
 # cat /var/spool/mail/ec2-user
+# psql --host=nycdatadb.ckeiqvynkoun.us-east-1.rds.amazonaws.com --port=5432 dbname=nycdatad --password=Prometheus11301987
+# psql --host=mypostgresql.c6c8mwvfdgv0.us-west-2.rds.amazonaws.com --port=5432 --username=awsuser --password --dbname=mypgdb
 try:
-    conn = pysco.connect(dbname=os.environ['NYC_DATA_DB'], port='5432', user=os.environ['NYC_DATA_USER'], host=os.environ['NYC_DATA_ENDPOINT'], password='{}'.format(os.environ['MASTER_PASSWORD']))
-    # conn = psycopg2.connect(dbname=os.environ['NYC_DATA_DB'], port='5432', user=os.environ['NYC_DATA_USER'], host=os.environ['NYC_DATA_ENDPOINT'], password='{}'.format(os.environ['MASTER_PASSWORD']))
+    conn = psycopg2.connect(dbname=os.environ['NYC_DATA_DB'], port='5432', user=os.environ['NYC_DATA_USER'], host=os.environ['NYC_DATA_ENDPOINT'], password='{}'.format(os.environ['MASTER_PASSWORD']))
     print("Connection Established")
 
 except (Exception, psycopg2.DatabaseError) as error:
@@ -20,14 +21,13 @@ except (Exception, psycopg2.DatabaseError) as error:
 
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-cur.execute("""select min(violation_id) from houses;""")
-first = cur.fetchone()[0]
-cur.execute("""select max(violation_id) from houses;""");
-last = cur.fetchone()[0]
-print(first, last)
+# cur.execute("""select min(violation_id) from houses;""")
+# first = cur.fetchone()[0]
+# cur.execute("""select max(violation_id) from houses;""");
+# last = cur.fetchone()[0]
 
-# first = 11066297
-# last =  11100000
+first = 11066297
+last =  11100000
 min = first
 max = first + 10000
 list =[]
@@ -37,7 +37,6 @@ def loop(first, last, min, max, list):
     if min < last:
         cur.execute("""SELECT * FROM houses where violation_id between {0} and {1}""".format(min, max))
         rows = cur.fetchall()
-        # print(rows)
 
         for row in rows:
             dict = {}
@@ -46,11 +45,8 @@ def loop(first, last, min, max, list):
                     row[i] = row[i].__str__()
                 dict[cur.description[i].name] = row[i]
             list.append(dict)
-
-        min += 10000
-        max += 10000
-        print(min, max)
-        return loop(first, last, min, max, list)
+        # Simple recursion
+        return loop(first, last, min+10000, max+10000, list)
 
     else:
         # write to json file
