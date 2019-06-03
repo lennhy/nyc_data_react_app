@@ -32,7 +32,7 @@ class S3api:
                 list.append(infile.read().decode("utf-8"))
         # print("here", list)
 
-        with open("data/merged_data.json", "wb") as outfile:
+        with open("data/merged_data.json", "w") as outfile:
             json.dump(list, outfile)
         #
         #         # data = open('data/data.json', 'rb')
