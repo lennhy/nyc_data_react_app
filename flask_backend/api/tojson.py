@@ -9,8 +9,6 @@ import json
 from S3api import S3api
 # Print error messages in Ec2 instance for cronjobs ran
 # cat /var/spool/mail/ec2-user
-# psql --host=nycdatadb.ckeiqvynkoun.us-east-1.rds.amazonaws.com --port=5432 dbname=nycdatad --password=Prometheus11301987
-# psql --host=mypostgresql.c6c8mwvfdgv0.us-west-2.rds.amazonaws.com --port=5432 --username=awsuser --password --dbname=mypgdb
 try:
     conn = psycopg2.connect(dbname=os.environ['NYC_DATA_DB'], port='5432', user=os.environ['NYC_DATA_USER'], host=os.environ['NYC_DATA_ENDPOINT'], password='{}'.format(os.environ['MASTER_PASSWORD']))
     print("Connection Established")
@@ -31,8 +29,9 @@ last =  11100000
 min = first
 max = first + 10000
 list =[]
+index = 0
 
-def loop(first, last, min, max, list):
+def loop(first, last, min, max, list, index):
 
     if min < last:
         cur.execute("""SELECT * FROM houses where violation_id between {0} and {1}""".format(min, max))
@@ -46,20 +45,24 @@ def loop(first, last, min, max, list):
                 dict[cur.description[i].name] = row[i]
             list.append(dict)
         # Simple recursion
-        return loop(first, last, min+10000, max+10000, list)
-
-    else:
-        # write to json file
-        with open('data/data.json', 'w') as outfile:
+        with open('data/data{}.json'.format(index), 'w') as outfile:
             json.dump(list, outfile)
 
-        api = S3api()
-        api.download()
+        return loop(first, last, min+10000, max+10000, list, index+1)
+
+    else:
+        return
+        # write to json file
+        # with open('data/data.json', 'w') as outfile:
+            # json.dump(list, outfile)
+
+        # api = S3api()
+        # api.download()
 
 
 # def main():
 #     # call functions
 if __name__ == '__main__':
-    loop(first, last, min, max, list)
+    loop(first, last, min, max, list, index)
 #         csv = Tojson()
 #         csv.main()
