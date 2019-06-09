@@ -20,41 +20,39 @@ class S3api:
 
 
         # Upload a new file
-        # try:
-        for f in glob.glob("data/*.json"):
-            print(f)
+        try:
 
-            with open(f, "rb") as infile:
-                # print(infile.read())
-                # print("here------", type(infile))
-                # print("baaaaaa_----------",type(json.loads(infile.read())))
-                print("------", infile.read().decode("utf-8"))
-                list.append(infile.read().decode("utf-8"))
-        # print("here", list)
+            for f in glob.glob(os.path.abspath("data/*")):
+                with open(f, "rb") as infile:
+                    try:
+                        # Decode bytes object to a json string
+                        list.append(json.loads((infile.read()).decode("utf-8")))
+                    except Exception:
+                        print(Exception)
 
-        with open("data/merged_data.json", "w") as outfile:
-            json.dump(list, outfile)
-        #
-        #         # data = open('data/data.json', 'rb')
-        #         # print(data)
-        #         # s3.Bucket('nycviolations').put_object(Key='data.json', Body=data)
-        #         # print("Successfully uploaded")
-        # except:
-            # print("Upload was not Successfull")
+            with open("data/merged_data.json", "w") as outfile:
+                json.dump(list, outfile)
+
+                data = open('data/merged_data.json', 'rb')
+                print("data ", data)
+                s3.Bucket('nycviolations').put_object(Key='merged_data.json', Body=data)
+                print("Successfully uploaded")
+        except Exception as e:
+            print(Exception, "Upload was not Successfull")
 
 
         # try:
-        #     s3.meta.client.download_file('nycviolations', 'data.json', 'data/data.json')
+        #     s3.meta.client.download_file('nycviolations', 'merged_data.json', 'merged_data.json')
         #     print("Successfully downloaded")
         #     # Remove from linux server
-        #     os.remove('data/data.json')
-        # except:
+        #     os.remove('data/*.json')
+        # except IOError:
         #     # print(client.download_file('nycviolations', 'data.json', 'data/data1.json'))
-        #     print("Download was not Successfull")
+        #     print(IOError, "Download was not Successfull")
 
 
     # with open('data.json', 'wb') as f:
-    #     s3.download_fileobj('nycviolations', 'data1.json', f)
+        # s3.download_fileobj('nycviolations', 'data1.json', f)
 
 if __name__ == '__main__':
     api = S3api()

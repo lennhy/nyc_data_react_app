@@ -51,13 +51,13 @@ def loop(first, last, min, max, list, index):
         return loop(first, last, min+10000, max+10000, list, index+1)
 
     else:
-        return
+        # return
         # write to json file
         # with open('data/data.json', 'w') as outfile:
-            # json.dump(list, outfile)
+        #     json.dump(list, outfile)
 
-        # api = S3api()
-        # api.download()
+        api = S3api()
+        api.download()
 
 
 # def main():
