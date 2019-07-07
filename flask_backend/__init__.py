@@ -28,8 +28,8 @@ def create_app(test_config=None):
     def index():
         return render_template('index.html')
 
-    @app.route('/houses')
-    def houses():
+    # @app.route('/houses')
+    # def houses():
         # loadfromS3()
 
     return app

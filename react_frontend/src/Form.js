@@ -37,10 +37,46 @@ class Form extends Component {
   }
 
 
+  findSearch(data){
+    var array =[]
+    data.forEach(function(arr, idx){
+      // console.log(arr)
+      // console.log(idx)
+      // console.log(arr[idx])
+      console.log(arr)
+      // console.log(arr[idx])
+        arr.filter(function(obj, filIdx, arr2){
+          // val, filIdx, obj => {
+          // console.log(val[filIdx])
+          console.log(obj, filIdx, arr2)
+
+            // console.log(obj)
+            // console.log(filIdx)
+            console.log(obj.boro)
+            console.log(typeof obj.boro)
+
+            if(obj.boro.includes("BRONX")){
+              console.log("yay")
+              array.push(obj)
+            }
+            // word.includes("sp")}
+          // );
+          // console.log(arr[index])
+        // }
+      })
+    console.log(array)
+    return array;
+  })
+}
+
+
   // --------------- HANDLE INPUT FROM FORM --------------------- //
   handleChange(event) {
     const target = event.target;
     const name = target.name;
+    console.log(event.name)
+    console.log(target.name)
+    console.log(target.value)
     this.setState({
       [name]: target.value.toUpperCase()
     });
@@ -83,6 +119,27 @@ class Form extends Component {
 
     // ---------------- RUN THE SOCRATA API -------------------//
     runApi() {
+      var searcher = this.findSearch
+      fetch("static/data/merged_data.json")
+        .then(
+            function(response) {
+              if (response.status !== 200) {
+                console.log('Looks like there was a problem. Status Code: ' +
+                  response.status);
+                return;
+              }
+
+              // Examine the text in the response
+              response.json().then(function(data) {
+                searcher(data)
+                console.log(data);
+              });
+            }
+          )
+      .catch(function(err) {
+        console.log('Fetch Error :-S', err);
+      });
+
       var url;
       if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
         url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
