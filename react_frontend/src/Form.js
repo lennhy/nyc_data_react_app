@@ -52,13 +52,12 @@ class Form extends Component {
 
             // console.log(obj)
             // console.log(filIdx)
-            console.log(obj.boro)
-            console.log(typeof obj.boro)
+            if(obj.boro !== undefined && obj.house_number !== undefined && obj.street_name !== undefined && obj.zip !== undefined){
+              if(obj.boro.includes("BRONX") && obj.house_number.includes("494") && obj.street_name.includes("N") && obj.zip.includes("0")){
+                array.push(obj)
+              }
+          }
 
-            if(obj.boro.includes("BRONX")){
-              console.log("yay")
-              array.push(obj)
-            }
             // word.includes("sp")}
           // );
           // console.log(arr[index])
