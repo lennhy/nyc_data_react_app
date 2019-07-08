@@ -37,7 +37,8 @@ class Form extends Component {
   }
 
 
-  findSearch(data){
+  findSearch(boro, housenumber,  streetname, zip, data){
+    console.log(boro, housenumber,  streetname, zip, data)
     var array =[]
     data.forEach(function(arr, idx){
       // console.log(arr)
@@ -45,28 +46,36 @@ class Form extends Component {
       // console.log(arr[idx])
       console.log(arr)
       // console.log(arr[idx])
-        arr.filter(function(obj, filIdx, arr2){
-          // val, filIdx, obj => {
-          // console.log(val[filIdx])
-          console.log(obj, filIdx, arr2)
+      arr.filter(function(obj, filIdx, arr2){
+        // val, filIdx, obj => {
+        // console.log(val[filIdx])
+        console.log(obj, filIdx, arr2)
 
-            // console.log(obj)
-            // console.log(filIdx)
-            if(obj.boro !== undefined && obj.house_number !== undefined && obj.street_name !== undefined && obj.zip !== undefined){
-              if(obj.boro.includes("BRONX") && obj.house_number.includes("494") && obj.street_name.includes("N") && obj.zip.includes("0")){
-                array.push(obj)
-              }
+        // console.log(obj)
+        // console.log(filIdx)
+        if(obj.boro !== undefined && obj.house_number !== undefined && obj.street_name !== undefined && obj.zip !== undefined){
+          console.log(obj.boro.includes(boro))
+          console.log(obj.house_number.includes(housenumber))
+          console.log(obj.street_name.includes(streetname))
+          console.log(obj.zip.includes(zip))
+
+
+          if(obj.boro === boro && obj.house_number === housenumber && obj.street_name === streetname && obj.zip === zip){
+            console.log("YEEESSS!!")
+            array.push(obj)
+            console.log(array)
           }
-
-            // word.includes("sp")}
-          // );
-          // console.log(arr[index])
+        }
+        // {building_id: 120541, boro: "BRONX", house_number: "1934", street_name: "WEBSTER AVENUE", zip: "10457", …}
+        // word.includes("sp")}
+        // );
+        // console.log(arr[index])
         // }
       })
-    console.log(array)
+      console.log(array)
+    })
     return array;
-  })
-}
+  }
 
 
   // --------------- HANDLE INPUT FROM FORM --------------------- //
@@ -101,74 +110,158 @@ class Form extends Component {
 
   formatDate(dateObj){
     for(let i=0; i < dateObj.length; i++){
-        if(dateObj[i]["novissueddate"] ){
-          dateObj[i]["novissueddate"] = dateObj[i]["novissueddate"].toString().substring(5, 10) + "-" + dateObj[i]["novissueddate"].toString().substring(0, 4)
-        }
-        if(dateObj[i]["inspectiondate"] ){
-          dateObj[i]["inspectiondate"] = dateObj[i]["inspectiondate"].toString().substring(5, 10)  + "-" + dateObj[i]["inspectiondate"].toString().substring(0, 4)
-        }
-        if(dateObj[i]["approveddate"] ){
-          dateObj[i]["approveddate"] = dateObj[i]["approveddate"].toString().substring(5, 10)  + "-" + dateObj[i]["approveddate"].toString().substring(0, 4)
-        }
+      if(dateObj[i]["novissueddate"] ){
+        dateObj[i]["novissueddate"] = dateObj[i]["novissueddate"].toString().substring(5, 10) + "-" + dateObj[i]["novissueddate"].toString().substring(0, 4)
+      }
+      if(dateObj[i]["inspectiondate"] ){
+        dateObj[i]["inspectiondate"] = dateObj[i]["inspectiondate"].toString().substring(5, 10)  + "-" + dateObj[i]["inspectiondate"].toString().substring(0, 4)
+      }
+      if(dateObj[i]["approveddate"] ){
+        dateObj[i]["approveddate"] = dateObj[i]["approveddate"].toString().substring(5, 10)  + "-" + dateObj[i]["approveddate"].toString().substring(0, 4)
+      }
     }
 
-      return dateObj;
-    }
+    return dateObj;
+  }
 
 
-    // ---------------- RUN THE SOCRATA API -------------------//
-    runApi() {
-      var searcher = this.findSearch
+  // ---------------- RUN THE SOCRATA API -------------------//
+
+  // runApi() {
+  // console.log(this)
+  // var self = this;
+  // console.log(this.state.boro)
+  //
+  // var searcher = this.findSearch;
+  //
+  // if (self.state.boro && self.state.housenumber && self.state.streetname && self.state.zip) {
+  //     self.setState({
+  //       hiding:{
+  //         class: 'cover'
+  //       },
+  //       loading: {
+  //         status: 'loading',
+  //         class: 'loader'
+  //       }
+  //     });
+  //   }
+  //
+  // fetch("static/data/merged_data.json")
+  //   .then(
+  //       function(response) {
+  //         if (response.status !== 200) {
+  //           console.log('Looks like there was a problem. Status Code: ' +
+  //             response.status);
+  //           return;
+  //         }
+  //
+  //         // Examine the text in the response
+  //         response.json().then(function(data) {
+  //           console.log(self)
+  //           var searchedData = searcher(self.state.boro, self.state.housenumber,  self.state.streetname, self.state.zip, data)
+  //           console.log(data);
+  //           console.log(searchedData);
+  //
+  //
+  //           self.setState({
+  //             isLoaded: true,
+  //             houses: self.formatDate(searchedData),
+  //             hiding:{
+  //               class: ''
+  //             },
+  //             loading: {
+  //               status: '',
+  //               class: ''
+  //             }
+  //           });
+  //
+  //         });
+  //       }
+  //     )
+  // .catch(function(err) {
+  //   console.log('Fetch Error :-S', err);
+  // });
+  //
+  //  }
+  // var url;
+  // if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
+  //   url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
+  //   this.setState({
+  //     hiding:{
+  //       class: 'cover'
+  //     },
+  //     loading: {
+  //       status: 'loading',
+  //       class: 'loader'
+  //     }
+  //   });
+  // }
+  // else {
+  //   url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
+  // }
+  // axios.get(url, {
+  //     params: {
+  //       "$limit" : 1000,
+  //       "$$app_token": process.env.NYC_DATA_APP_TOKEN
+  //     }
+  //   })
+  //   .then( // --------------------- RETURN PROMISE ----------------
+  //     (result) => {
+  //       if(result.data.length === 0 || result.data === null  ){
+  //         errorMessage();
+  //       }
+  //       this.setState({
+  //         isLoaded: true,
+  //         houses: this.formatDate(result.data),
+  //         hiding:{
+  //           class: ''
+  //         },
+  //         loading: {
+  //           status: '',
+  //           class: ''
+  //         }
+  //       });
+  //     },
+  //     (error) => {
+  //       console.log(error)
+  //       this.setState({
+  //         isLoaded: true,
+  //         error
+  //       });
+  //     }
+  // )
+  // }
+
+  runApi() {
+    console.log(this)
+    var self = this;
+    // console.log(this.state.boro)
+    //
+    var searcher = self.findSearch;
+    if (self.state.boro && self.state.housenumber && self.state.streetname && self.state.zip) {
+
       fetch("static/data/merged_data.json")
-        .then(
-            function(response) {
-              if (response.status !== 200) {
-                console.log('Looks like there was a problem. Status Code: ' +
-                  response.status);
-                return;
-              }
-
-              // Examine the text in the response
-              response.json().then(function(data) {
-                searcher(data)
-                console.log(data);
-              });
-            }
-          )
-      .catch(function(err) {
-        console.log('Fetch Error :-S', err);
-      });
-
-      var url;
-      if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
-        url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
-        this.setState({
-          hiding:{
-            class: 'cover'
-          },
-          loading: {
-            status: 'loading',
-            class: 'loader'
+      .then(
+        function(response) {
+          if (response.status !== 200) {
+            console.log('Looks like there was a problem. Status Code: ' +
+            response.status);
+            return;
           }
-        });
-      }
-      else {
-        url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
-      }
-      axios.get(url, {
-          params: {
-            "$limit" : 1000,
-            "$$app_token": process.env.NYC_DATA_APP_TOKEN
-          }
-        })
-        .then( // --------------------- RETURN PROMISE ----------------
-          (result) => {
-            if(result.data.length === 0 || result.data === null  ){
-              errorMessage();
-            }
-            this.setState({
+
+          // Examine the text in the response
+          response.json().then(function(data) {
+            console.log(self)
+            var searchedData = searcher(self.state.boro, self.state.housenumber, self.state.streetname, self.state.zip, data)
+            console.log(data);
+            console.log(searcher(self.state.boro, self.state.housenumber, self.state.streetname, self.state.zip, data))
+            console.log(self.findSearch(self.state.boro, self.state.housenumber, self.state.streetname, self.state.zip, data))
+            console.log(searchedData);
+
+
+            self.setState({
               isLoaded: true,
-              houses: this.formatDate(result.data),
+              houses: self.formatDate(searchedData),
               hiding:{
                 class: ''
               },
@@ -177,52 +270,98 @@ class Form extends Component {
                 class: ''
               }
             });
-          },
-          (error) => {
-            console.log(error)
-            this.setState({
-              isLoaded: true,
-              error
-            });
-          }
-        )
-    }
 
-
-    //  ----------------------- RETURN DATA TO DOM ---------------------- //
-    componentDidMount() {
-      this.runApi()
-      // var url;
-      this.setState({
-        hiding:{
-          class: 'cover'
-        },
-        loading: {
-          status: 'loading',
-          class: 'loader'
+          });
         }
+      )
+      .catch(function(err) {
+        console.log('Fetch Error :-S', err);
       });
     }
+    // var url;
+    // if (this.state.boro && this.state.housenumber && this.state.streetname && this.state.zip) {
+    //   url = `https://data.cityofnewyork.us/resource/b2iz-pps8.json?boro=${this.state.boro}&housenumber=${this.state.housenumber}&streetname=${this.state.streetname}&zip=${this.state.zip}&$order=apartment ASC`;
+    //   this.setState({
+    //     hiding:{
+    //       class: 'cover'
+    //     },
+    //     loading: {
+    //       status: 'loading',
+    //       class: 'loader'
+    //     }
+    //   });
+    // }
+    // else {
+    //   url = "https://data.cityofnewyork.us/resource/b2iz-pps8.json?$order=nta ASC";
+    // }
+    // axios.get(url, {
+    //     params: {
+    //       "$limit" : 1000,
+    //       "$$app_token": process.env.NYC_DATA_APP_TOKEN
+    //     }
+    //   })
+    //   .then( // --------------------- RETURN PROMISE ----------------
+    //     (result) => {
+    //       if(result.data.length === 0 || result.data === null  ){
+    //         errorMessage();
+    //       }
+    //       this.setState({
+    //         isLoaded: true,
+    //         houses: this.formatDate(result.data),
+    //         hiding:{
+    //           class: ''
+    //         },
+    //         loading: {
+    //           status: '',
+    //           class: ''
+    //         }
+    //       });
+    //     },
+    //     (error) => {
+    //       console.log(error)
+    //       this.setState({
+    //         isLoaded: true,
+    //         error
+    //       });
+    //     }
+    //   )
+  }
 
 
-    // -------------------- UPDATE THE DOM WITH DATA FROM API AFTER FORM SUBMIT VALUES THAT CHANGE THE PARAMETERS IN THE API URL ------------------- //
-    update() {
-      this.runApi()
-      console.log(this.state.houses)
-      if(this.state.houses === null){
+  //  ----------------------- RETURN DATA TO DOM ---------------------- //
+  componentDidMount() {
+    this.runApi()
+    // var url;
+    this.setState({
+      hiding:{
+        class: 'cover'
+      },
+      loading: {
+        status: 'loading',
+        class: 'loader'
       }
+    });
+  }
+
+
+  // -------------------- UPDATE THE DOM WITH DATA FROM API AFTER FORM SUBMIT VALUES THAT CHANGE THE PARAMETERS IN THE API URL ------------------- //
+  update() {
+    this.runApi()
+    console.log(this.state.houses)
+    if(this.state.houses === null){
     }
+  }
 
 
-    // -------------------- EXIT BUTTON TOGGLE FROM SEARCH BOX FOR MOBILE ------------------ //
-    toggleFormBox(e){
-      if(e.target.className === "exit"){
-        document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "";
-        document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "block";
+  // -------------------- EXIT BUTTON TOGGLE FROM SEARCH BOX FOR MOBILE ------------------ //
+  toggleFormBox(e){
+    if(e.target.className === "exit"){
+      document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "";
+      document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "block";
 
-      }
-      if(e.target.className === "formButton btn btn-primary"){
-        document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "";
+    }
+    if(e.target.className === "formButton btn btn-primary"){
+      document.getElementsByClassName('formButton btn btn-primary')[0].style.display = "";
       document.getElementsByClassName('col-md-2 bd-sidebar')[0].style.display = "block";
     }
   }
@@ -238,153 +377,153 @@ class Form extends Component {
   render() {
     return (
 
-            <div className="container-fluid">
-            <div className={this.state.hiding.class}></div>
+      <div className="container-fluid">
+      <div className={this.state.hiding.class}></div>
 
-              {/* // Begining of Header */}
-              <nav className="navbar fixed-top navbar-custom bg-light">
+      {/* // Begining of Header */}
+      <nav className="navbar fixed-top navbar-custom bg-light">
 
-                <div className="navbar-brand" href="#">
-                  <span className="highLight">Flatinspector</span> </div>
-                <span className="pull-right" href="#"> </span>
-                <div className="message"></div>
-              </nav>
+      <div className="navbar-brand" href="#">
+      <span className="highLight">Flatinspector</span> </div>
+      <span className="pull-right" href="#"> </span>
+      <div className="message"></div>
+      </nav>
 
-              <div className="row">
+      <div className="row">
 
-              <div className="formButton btn btn-primary" onClick={this.toggleFormBox}>Click here and fill out all input fields.</div>
+      <div className="formButton btn btn-primary" onClick={this.toggleFormBox}>Click here and fill out all input fields.</div>
 
-              {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of Form Container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+      {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of Form Container >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
 
-                <nav className="col-md-2 bd-sidebar">
+      <nav className="col-md-2 bd-sidebar">
 
-                <div className="exit" onClick={this.toggleFormBox}>x</div>
+      <div className="exit" onClick={this.toggleFormBox}>x</div>
 
-                  <form onSubmit={this.handleSubmit}>
-                  <p className="sideBar"><b>Fill out all input fields</b></p>
+      <form onSubmit={this.handleSubmit}>
+      <p className="sideBar"><b>Fill out all input fields</b></p>
 
-                  {/* // Boro code Input */}
-                  <div className="form-group ">
+      {/* // Boro code Input */}
+      <div className="form-group ">
 
-                    <label>
-                    <select value={this.state.value} name="boro" onChange={this.handleChange} className="form-control">
-                    <option defaultValue value="">Borough</option>
-                    <option value="manhattan">Manhattan</option>
-                    <option value="bronx">Bronx</option>
-                    <option value="brooklyn">Brooklyn</option>
-                    <option value="queens">Queens</option>
-                    <option value="staten_island">Staten Island</option>
-                    </select>
-                    </label>
-                  </div>
+      <label>
+      <select value={this.state.value} name="boro" onChange={this.handleChange} className="form-control">
+      <option defaultValue value="">Borough</option>
+      <option value="manhattan">Manhattan</option>
+      <option value="bronx">Bronx</option>
+      <option value="brooklyn">Brooklyn</option>
+      <option value="queens">Queens</option>
+      <option value="staten_island">Staten Island</option>
+      </select>
+      </label>
+      </div>
 
-                  {/* // Housenumber Input */}
-                  <div className="form-group">
-                    <label>
-                    <input type="text" className="form-control"
-                    name="housenumber"
-                    value={this.state.housenumber}
-                    onPaste={this.handlePaste}
-                    onChange={this.handleChange}
-                    placeholder="Building Number"
-                    />
-                    </label>
-                  </div>
+      {/* // Housenumber Input */}
+      <div className="form-group">
+      <label>
+      <input type="text" className="form-control"
+      name="housenumber"
+      value={this.state.housenumber}
+      onPaste={this.handlePaste}
+      onChange={this.handleChange}
+      placeholder="Building Number"
+      />
+      </label>
+      </div>
 
-                  <div className="form-group" >
-                  {/* // Streetname code Input */}
-                    <label>
-                    <input type="text" className="form-control"
-                    name="streetname"
-                    value={this.state.streetname}
-                    onPaste={this.handlePaste}
-                    onChange={this.handleChange}
-                    placeholder="Street Name"
+      <div className="form-group" >
+      {/* // Streetname code Input */}
+      <label>
+      <input type="text" className="form-control"
+      name="streetname"
+      value={this.state.streetname}
+      onPaste={this.handlePaste}
+      onChange={this.handleChange}
+      placeholder="Street Name"
 
-                    />
-                    </label>
-                  </div>
+      />
+      </label>
+      </div>
 
-                  <div className="form-group">
-                  {/* // Zip code Input */}
-                    <label>
-                    <input type="text" className="form-control"
-                    name="zip"
-                    value={this.state.zip}
-                    onPaste={this.handlePaste}
-                    onChange={this.handleChange}
-                    placeholder="Zip Code"
-                    />
-                    </label>
-                  </div>
+      <div className="form-group">
+      {/* // Zip code Input */}
+      <label>
+      <input type="text" className="form-control"
+      name="zip"
+      value={this.state.zip}
+      onPaste={this.handlePaste}
+      onChange={this.handleChange}
+      placeholder="Zip Code"
+      />
+      </label>
+      </div>
 
-                  <input type="submit" value="Search Apartment" onClick={this.update.bind(this)} className="btn btn-primary" />
-                  </form>
-                {/* / <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Side bar End of Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>/ */}
+      <input type="submit" value="Search Apartment" onClick={this.update.bind(this)} className="btn btn-primary" />
+      </form>
+      {/* / <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Side bar End of Form >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>/ */}
 
-                <div className="jumbotron">
-                <header className="header">
-                  <div className="container">
+      <div className="jumbotron">
+      <header className="header">
+      <div className="container">
 
-                    <ul className="list-inline">
-                    <li className="text-muted"><a href="http://www.polyverge.com" target="_blank"  rel="noopener noreferrer">Created by Lenn Hypolite | Website: www.Polyverge.com</a></li>
-                    <li className="text-muted"><a href="https://dev.socrata.com/foundry/data.cityofnewyork.us/b2iz-pps8" target="_blank"  rel="noopener noreferrer">Powered by dev.Socrata.com | Data from NYC Open Data API </a></li>
+      <ul className="list-inline">
+      <li className="text-muted"><a href="http://www.polyverge.com" target="_blank"  rel="noopener noreferrer">Created by Lenn Hypolite | Website: www.Polyverge.com</a></li>
+      <li className="text-muted"><a href="https://dev.socrata.com/foundry/data.cityofnewyork.us/b2iz-pps8" target="_blank"  rel="noopener noreferrer">Powered by dev.Socrata.com | Data from NYC Open Data API </a></li>
 
-                    <li className="text-muted" id="date"></li>
-                    </ul>
-                  </div>
-                </header>
-                </div>
-                </nav>
+      <li className="text-muted" id="date"></li>
+      </ul>
+      </div>
+      </header>
+      </div>
+      </nav>
 
-                {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of List of elements from data returned from API >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+      {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Beginning of List of elements from data returned from API >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
 
-                <div className="col-md-10 bd-content">
-                <h1 className="loading-header">{this.state.loading.status}</h1>
-                <div className={this.state.loading.class}></div>
-                <div>
-                  <h2>{this.props.boroApts}</h2>
-                </div>
-                  {this.state.houses.map((house, i )=> (
+      <div className="col-md-10 bd-content">
+      <h1 className="loading-header">{this.state.loading.status}</h1>
+      <div className={this.state.loading.class}></div>
+      <div>
+      <h2>{this.props.boroApts}</h2>
+      </div>
+      {this.state.houses.map((house, i )=> (
 
-                    <ul key={i+=1} className="list-group">
+        <ul key={i+=1} className="list-group">
 
-                      <div className="row">
+        <div className="row">
 
-                        <div className="col-sm-6">
-                           <h2  >{" "}{house.streetname}{", "}{house.apartment}, {" "}{house.boro},{house.zip}
-                           </h2>
-                           <li  className="list-group-item"><span className="bold">Issue Date of Violation</span> {":  "}{house.novissueddate}
-                           </li>
-                           <li  className="list-group-item"><span className="bold">Date of Inspection</span> {":  "}{house.inspectiondate}
-                           </li>
-                           <li  className="list-group-item"><span className="bold">Date violation was approved </span> {":  "}{house.approveddate}
-                          </li>
-                        </div>
+        <div className="col-sm-6">
+        <h2  >{" "}{house.streetname}{", "}{house.apartment}, {" "}{house.boro},{house.zip}
+        </h2>
+        <li  className="list-group-item"><span className="bold">Issue Date of Violation</span> {":  "}{house.novissueddate}
+        </li>
+        <li  className="list-group-item"><span className="bold">Date of Inspection</span> {":  "}{house.inspectiondate}
+        </li>
+        <li  className="list-group-item"><span className="bold">Date violation was approved </span> {":  "}{house.approveddate}
+        </li>
+        </div>
 
-                        <div className="col-sm-6">
-                          <li key={i+=5+"novdescription"} className="list-group-item"><span className="bold">Violation{": "}</span> {house.novdescription}
-                          </li>
-                          <li key={i+=6+"novdescription"} className="list-group-item list-group-item-info"><span className="bold">Current Status</span> {":  "}{house.currentstatus}
-                         </li>
-                        </div>
+        <div className="col-sm-6">
+        <li key={i+=5+"novdescription"} className="list-group-item"><span className="bold">Violation{": "}</span> {house.novdescription}
+        </li>
+        <li key={i+=6+"novdescription"} className="list-group-item list-group-item-info"><span className="bold">Current Status</span> {":  "}{house.currentstatus}
+        </li>
+        </div>
 
-                      </div>
+        </div>
 
-                    </ul>
+        </ul>
 
-                  ))}
-                {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< End of List of elements from data returned from API >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
-                </div>
+      ))}
+      {/* // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< End of List of elements from data returned from API >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */}
+      </div>
 
-              {/* // Row 10 wide */}
-              </div>
+      {/* // Row 10 wide */}
+      </div>
 
-              <div className="row">
-                <div className="notice"></div>
-              </div>
-          {/* // Contianer fluid */}
-          </div>
+      <div className="row">
+      <div className="notice"></div>
+      </div>
+      {/* // Contianer fluid */}
+      </div>
     );
   }
 }
