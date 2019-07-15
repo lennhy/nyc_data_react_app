@@ -66,6 +66,7 @@ class Form extends Component {
             console.log(array)
           }
         }
+        // Enter this address in search box to test search 
         // {building_id: 120541, boro: "BRONX", house_number: "1934", street_name: "WEBSTER AVENUE", zip: "10457", …}
         // word.includes("sp")}
         // );
